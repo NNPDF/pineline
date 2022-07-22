@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pineline"
 version = "0.0.0"
-description = "Theory pineline: fast theory predictions"
+description = "Theory pineline for fast predictions"
 authors = ["Alessandro Candido <candido.ale@gmail.com>"]
 
 [tool.poetry.dependencies]
