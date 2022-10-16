@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import Layout from '../components/layout.tsx'
-import NestedLayout from '../components/nested-layout.tsx'
+import Layout from '../components/layout'
+import NestedLayout from '../components/nested-layout'
 
 import styles from '../components/home.module.css'
 
