@@ -1,4 +1,5 @@
-// pages/index.js
+import Head from 'next/head'
+import Link from 'next/link'
 
 import Layout from '../components/layout.tsx'
 import NestedLayout from '../components/nested-layout.tsx'
@@ -8,18 +9,23 @@ import styles from '../components/home.module.css'
 export default function Page() {
   return (
     <>
+      <Head>
+        <title>Pineline</title>
+        <meta name="description" content="Pineline home page" />
+      </Head>
       <div className={styles.titlebox}>
-        <h1>Home</h1>
+        <h1>Pineline</h1>
+        <h5>Theory predictions for PDF fitting</h5>
       </div>
       <div className={styles.links}>
         <h3 className={styles.link}>
-          <a href="/introduction">Introduction</a>
+          <Link href="/introduction">Introduction</Link>
         </h3>
         <h3 className={styles.link}>
-          <a href="/installation">Installation</a>
+          <Link href="/installation">Installation</Link>
         </h3>
         <h3 className={styles.link}>
-          <a href="/tutorials">Tutorials</a>
+          <Link href="/tutorials/setup">Tutorials</Link>
         </h3>
       </div>
     </>

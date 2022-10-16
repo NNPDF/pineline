@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://pineline.readthedocs.io/">
+  <a href="https://n3pdf.github.io/pineline/">
     <img alt="Pineline"
     src="./sphinx/docs/source/_static/logo.png"
     width=400>
