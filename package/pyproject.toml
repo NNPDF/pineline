@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pineline"
+version = "0.0.1"
+description = "Theory predictions for PDF fitting"
+authors = ["Alessandro Candido <candido.ale@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10,<3.11"
+eko = "^0.10.2"
+pineko = "^0.2.4"
+pineappl = "^0.5.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
