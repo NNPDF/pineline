@@ -1,7 +1,7 @@
 {
-  "index": "Introduction",
-  "get-started": "Get Started",
-  "features": "Features",
-  "themes": "Themes",
-  "advanced": "Advanced"
+  "introduction": "Introduction",
+  "installation": "Installation",
+  "tutorials": "Tutorials",
+  "examples": "Examples",
+  "nextra": "Nextra"
 }

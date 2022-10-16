@@ -1,0 +1,13 @@
+.titlebox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.links {
+  display: flex;
+}
+
+.link {
+  margin: 1em;
+}
