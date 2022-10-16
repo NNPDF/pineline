@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   '@types/node': ^18.11.0
@@ -14,9 +14,9 @@ specifiers:
   webpack: ^5.74.0
 
 dependencies:
-  next: 12.3.1_react-dom@17.0.2+react@17.0.2
-  nextra: 1.1.0_react@17.0.2+webpack@5.74.0
-  nextra-theme-docs: 1.2.6_9f113a353cf78416d41a26ea5135b210
+  next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
+  nextra: 1.1.0_z3yk7izmwsoahwplgcmcxkn2yu
+  nextra-theme-docs: 1.2.6_t4itunj466cbnva2e3vfcnnsca
   prismjs: 1.29.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -239,19 +239,19 @@ packages:
     dev: false
     optional: true
 
-  /@reach/skip-nav/0.11.2_react-dom@17.0.2+react@17.0.2:
+  /@reach/skip-nav/0.11.2_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-cXGQJodYcyUBLBv59oxB4ywwgFDHnoyt8+W+ZgdR1LR9eDxx6170shP0yPcwf/5KV2tXJtNF2McRUObkUW90+Q==}
     peerDependencies:
       react: ^16.8.0
       react-dom: ^16.8.0
     dependencies:
-      '@reach/utils': 0.11.2_react-dom@17.0.2+react@17.0.2
+      '@reach/utils': 0.11.2_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       tslib: 2.4.0
     dev: false
 
-  /@reach/utils/0.11.2_react-dom@17.0.2+react@17.0.2:
+  /@reach/utils/0.11.2_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-fBTolYj+rKTROXmf0zHO0rCWSvw7J0ALmYj5QxW4DmITMOH5uyRuWDWOfqohIGFbOtF/sum50WTB3tvx76d+Aw==}
     peerDependencies:
       react: ^16.8.0
@@ -325,6 +325,12 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: false
 
+  /@types/keyv/3.1.4:
+    resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+    dependencies:
+      '@types/node': 18.11.0
+    dev: false
+
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
     dependencies:
@@ -344,7 +350,6 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
-    dev: true
 
   /@types/react/18.0.21:
     resolution: {integrity: sha512-7QUCOxvFgnD5Jk8ZKlUAhVcRj7GuJRjnjjiY/IUBWKgOlnvDvTMLD4RTF7NPyVmbRhNrbomZiOepg7M/2Kj1mA==}
@@ -352,11 +357,15 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: true
+
+  /@types/responselike/1.0.0:
+    resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
+    dependencies:
+      '@types/node': 18.11.0
+    dev: false
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: true
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
@@ -739,7 +748,6 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -1110,6 +1118,8 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       '@sindresorhus/is': 0.7.0
+      '@types/keyv': 3.1.4
+      '@types/responselike': 1.0.0
       cacheable-request: 2.1.4
       decompress-response: 3.3.0
       duplexer3: 0.1.5
@@ -1996,19 +2006,19 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-themes/0.0.8_1cf1c24f4f6841ccbbeee08863782ad1:
+  /next-themes/0.0.8_dty4et2pnba4zo7o4cegg6bk2e:
     resolution: {integrity: sha512-dyrh+/bZW4hkecFEg2rfwOLLzU2UnE7KfiwcV0mIwkPrO+1n1WvwkC8nabgKA5Eoi8stkYfjmA72FxTaWEOHtg==}
     peerDependencies:
       next: ^9.5.5
       react: ^16.13.1
       react-dom: ^16.13.1
     dependencies:
-      next: 12.3.1_react-dom@17.0.2+react@17.0.2
+      next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /next/12.3.1_react-dom@17.0.2+react@17.0.2:
+  /next/12.3.1_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-l7bvmSeIwX5lp07WtIiP9u2ytZMv7jIeB8iacR28PuUEFG5j0HGAPnMqyG5kbZNBG2H7tRsrQ4HCjuMOPnANZw==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -2053,7 +2063,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /nextra-theme-docs/1.2.6_9f113a353cf78416d41a26ea5135b210:
+  /nextra-theme-docs/1.2.6_t4itunj466cbnva2e3vfcnnsca:
     resolution: {integrity: sha512-6tSq74EEw/lfZXfrN9TXr8UFov1mddW+yXnwQB57XRF9hBVq3WtVl6lJT7Xe9q0S0s9lkEeGviHtq+NRpONcQQ==}
     peerDependencies:
       next: '>=9.5.3'
@@ -2061,26 +2071,26 @@ packages:
       react-dom: '>=16.13.1'
     dependencies:
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@reach/skip-nav': 0.11.2_react-dom@17.0.2+react@17.0.2
+      '@reach/skip-nav': 0.11.2_sfoxds7t5ydpegc3knd667wn6m
       classnames: 2.3.2
       focus-visible: 5.2.0
       github-slugger: 1.4.0
       grapheme-splitter: 1.0.4
       intersection-observer: 0.12.2
       match-sorter: 4.2.1
-      next: 12.3.1_react-dom@17.0.2+react@17.0.2
-      next-themes: 0.0.8_1cf1c24f4f6841ccbbeee08863782ad1
+      next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
+      next-themes: 0.0.8_dty4et2pnba4zo7o4cegg6bk2e
       parse-git-url: 1.0.1
       prism-react-renderer: 1.3.5_react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-innertext: 1.1.5_005c79854d76e85abe99b95305d3e7ca
+      react-innertext: 1.1.5_abohtbkno3ufvpuzxfjqlu7hzi
       title: 3.5.3
     transitivePeerDependencies:
       - '@types/react'
     dev: false
 
-  /nextra/1.1.0_react@17.0.2+webpack@5.74.0:
+  /nextra/1.1.0_z3yk7izmwsoahwplgcmcxkn2yu:
     resolution: {integrity: sha512-WxD1c05gs4cyPHWvqOei9ofIQkLjtzQaDQo8+56f5ss7yJ6ZyI7Ohx7nyyjm6yTo1fO8gfj3v1l/AZmLnjh4FA==}
     peerDependencies:
       react: '>=16.13.1'
@@ -2318,7 +2328,7 @@ packages:
       scheduler: 0.20.2
     dev: false
 
-  /react-innertext/1.1.5_005c79854d76e85abe99b95305d3e7ca:
+  /react-innertext/1.1.5_abohtbkno3ufvpuzxfjqlu7hzi:
     resolution: {integrity: sha512-PWAqdqhxhHIv80dT9znP2KvS+hfkbRovFp4zFYHFFlOoQLRiawIic81gKb3U1wEyJZgMwgs3JoLtwryASRWP3Q==}
     peerDependencies:
       '@types/react': '>=0.0.0 <=99'
