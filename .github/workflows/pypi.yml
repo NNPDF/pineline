@@ -37,18 +37,11 @@ jobs:
           PIP="$(head -n1 $(which poetry) | cut -c 3-) -m pip"
           ${PIP} install poetry-dynamic-versioning
       - name: Install dependencies
-        run: poetry install --no-interaction --no-root --with test ${{ inputs.poetry-extras }}
+        run: poetry install --no-interaction --no-root ${{ inputs.poetry-extras }}
         working-directory: package
         if: steps.cache.outputs.cache-hit != 'true'
       - name: Install project
         run: poetry install --no-interaction
-        working-directory: package
-      - name: Install task runner
-        run: pip install poethepoet
-      - name: Test
-        run: |
-          # run tests just before deployment
-          poe test
         working-directory: package
       - name: Package the distribution
         run: |
