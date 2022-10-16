@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pineline"
-version = "0.0.1"
+version = "0.0.0"
 description = "Theory predictions for PDF fitting"
 authors = ["Alessandro Candido <candido.ale@gmail.com>"]
 readme = "README.md"
@@ -10,6 +10,16 @@ python = "^3.10,<3.11"
 eko = "^0.10.2"
 pineko = "^0.2.4"
 pineappl = "^0.5.7"
+
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "semver"
+dirty = true
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["src/pineline/__init__.py"]
 
 
 [build-system]
