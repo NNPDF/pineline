@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   sodipodi:docname="pineline.svg"
+   sodipodi:docname="logo.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -25,7 +25,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.4185983"
-     inkscape:cx="192.79595"
+     inkscape:cx="193.14841"
      inkscape:cy="73.664264"
      inkscape:window-width="1366"
      inkscape:window-height="745"
@@ -211,13 +211,13 @@
     <text
        xml:space="preserve"
        style="font-size:13.3389px;line-height:1.25;font-family:'Fira Code';-inkscape-font-specification:'Fira Code';stroke-width:0.333473"
-       x="109.39771"
-       y="112.42117"
+       x="111.22063"
+       y="109.43586"
        id="text4769"><tspan
          sodipodi:role="line"
          id="tspan4767"
-         style="stroke-width:0.333473"
-         x="109.39771"
-         y="112.42117">Pineline</tspan></text>
+         style="font-style:italic;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Operator Mono';-inkscape-font-specification:'Operator Mono Light Italic';stroke-width:0.333473"
+         x="111.22063"
+         y="109.43586">Pineline</tspan></text>
   </g>
 </svg>
