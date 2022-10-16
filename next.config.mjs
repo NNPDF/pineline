@@ -8,5 +8,6 @@ const withNextra = nextra({
 
 export default {
   ...withNextra(),
+  basePath: '/pineline',
   images: { unoptimized: true },
 }
