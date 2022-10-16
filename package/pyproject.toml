@@ -8,8 +8,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10,<3.11"
 eko = "^0.10.2"
-pineko = "^0.2.4"
+pineko = "^0.2.5"
 pineappl = "^0.5.7"
+pinefarm = {version = "^0.2.1", optional = true, extras = ["full"]}
 
 
 [tool.poetry-dynamic-versioning]
