@@ -1,0 +1,4 @@
+/* Fix TOML issue with table class */
+.token.table {
+  display: initial;
+}
