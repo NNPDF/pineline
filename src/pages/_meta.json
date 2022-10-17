@@ -1,7 +1,36 @@
 {
+  "index": {
+    "title": "Nextra",
+    "type": "page",
+    "hidden": true,
+    "theme": {
+      "layout": "raw"
+    }
+  },
   "introduction": "Introduction",
   "installation": "Installation",
   "tutorials": "Tutorials",
   "examples": "Examples",
-  "nextra": "Nextra"
+  "nextra": "Nextra",
+  "example-page": {
+    "title": "Page",
+    "type": "page"
+  },
+  "example-menu": {
+    "title": "Menu",
+    "type": "menu",
+    "items": {
+      "introduction": {
+        "title": "Intro",
+        "href": "/introduction"
+      },
+      "installation": {
+        "title": "Install",
+        "href": "/installation"
+      },
+      "community": {
+        "title": "Community"
+      }
+    }
+  }
 }
