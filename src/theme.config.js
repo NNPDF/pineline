@@ -9,14 +9,14 @@ export default {
   editLink: {
     text: 'Edit this page on GitHub',
   },
-  // logo: (
-  // <>
-  // <span className="mr-2 font-extrabold hidden md:inline">Pineline</span>
-  // <span className="text-gray-600 font-normal hidden md:inline">
-  // Theory predictions for PDF fitting
-  // </span>
-  // </>
-  // ),
+  logo: (
+    <>
+      <span className="mr-2 font-extrabold hidden md:inline">Pineline</span>
+      <span className="text-gray-600 font-normal hidden md:inline">
+        Theory predictions for PDF fitting
+      </span>
+    </>
+  ),
   head: () => (
     <>
       <meta name="msapplication-TileColor" content="#ffffff" />
