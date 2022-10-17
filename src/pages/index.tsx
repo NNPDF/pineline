@@ -1,14 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import Layout from '../components/layout'
-import NestedLayout from '../components/nested-layout'
+import Home from '@components/layout'
 
-import styles from '../components/home.module.css'
+import styles from '@components/home.module.css'
 
 export default function Page() {
   return (
-    <>
+    <Home>
       <Head>
         <title>Pineline</title>
         <meta name="description" content="Pineline home page" />
@@ -28,14 +27,6 @@ export default function Page() {
           <Link href="/tutorials/setup">Tutorials</Link>
         </h3>
       </div>
-    </>
-  )
-}
-
-Page.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      <NestedLayout>{page}</NestedLayout>
-    </Layout>
+    </Home>
   )
 }
