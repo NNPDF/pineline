@@ -1,4 +1,4 @@
-lockfileVersion: 5.4
+lockfileVersion: 5.3
 
 specifiers:
   '@types/node': ^18.11.0
@@ -14,9 +14,9 @@ specifiers:
   webpack: ^5.74.0
 
 dependencies:
-  next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
-  nextra: 2.0.0-beta.30_dty4et2pnba4zo7o4cegg6bk2e
-  nextra-theme-docs: 2.0.0-beta.30_dty4et2pnba4zo7o4cegg6bk2e
+  next: 12.3.1_react-dom@17.0.2+react@17.0.2
+  nextra: 2.0.0-beta.30_1cf1c24f4f6841ccbbeee08863782ad1
+  nextra-theme-docs: 2.0.0-beta.30_1cf1c24f4f6841ccbbeee08863782ad1
   prismjs: 1.29.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -37,7 +37,7 @@ packages:
       regenerator-runtime: 0.13.10
     dev: false
 
-  /@headlessui/react/1.7.3_sfoxds7t5ydpegc3knd667wn6m:
+  /@headlessui/react/1.7.3_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-LGp06SrGv7BMaIQlTs8s2G06moqkI0cb0b8stgq7KZ3xcHdH3qMP+cRyV7qe5x4XEW/IGY48BW4fLesD6NQLng==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -360,19 +360,19 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@reach/skip-nav/0.17.0_sfoxds7t5ydpegc3knd667wn6m:
+  /@reach/skip-nav/0.17.0_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-wkkpQK3ffczzGHis6TaUvpOabuAL9n9Kh5vr4h56XPIJP3X77VcHUDk7MK3HbV1mTgamGxc9Hbd1sXKSWLu3yA==}
     peerDependencies:
       react: ^16.8.0 || 17.x
       react-dom: ^16.8.0 || 17.x
     dependencies:
-      '@reach/utils': 0.17.0_sfoxds7t5ydpegc3knd667wn6m
+      '@reach/utils': 0.17.0_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       tslib: 2.4.0
     dev: false
 
-  /@reach/utils/0.17.0_sfoxds7t5ydpegc3knd667wn6m:
+  /@reach/utils/0.17.0_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-M5y8fCBbrWeIsxedgcSw6oDlAMQDkl5uv3VnMVJ7guwpf4E48Xlh1v66z/1BgN/WYe2y8mB/ilFD2nysEfdGeA==}
     peerDependencies:
       react: ^16.8.0 || 17.x
@@ -1687,19 +1687,19 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-themes/0.2.1_dty4et2pnba4zo7o4cegg6bk2e:
+  /next-themes/0.2.1_1cf1c24f4f6841ccbbeee08863782ad1:
     resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
     peerDependencies:
       next: '*'
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
+      next: 12.3.1_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /next/12.3.1_sfoxds7t5ydpegc3knd667wn6m:
+  /next/12.3.1_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-l7bvmSeIwX5lp07WtIiP9u2ytZMv7jIeB8iacR28PuUEFG5j0HGAPnMqyG5kbZNBG2H7tRsrQ4HCjuMOPnANZw==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -1744,32 +1744,32 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /nextra-theme-docs/2.0.0-beta.30_dty4et2pnba4zo7o4cegg6bk2e:
+  /nextra-theme-docs/2.0.0-beta.30_1cf1c24f4f6841ccbbeee08863782ad1:
     resolution: {integrity: sha512-u8MCl8/5qH5iLKQKeUtWc52a3dGFIBF0F1sQqGVeMRfADc2uEtRoUaZb8Lh/b/7EtGpI+g8AJ0qLqBsRiuz6yg==}
     peerDependencies:
       next: '>=9.5.3'
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
     dependencies:
-      '@headlessui/react': 1.7.3_sfoxds7t5ydpegc3knd667wn6m
+      '@headlessui/react': 1.7.3_react-dom@17.0.2+react@17.0.2
       '@mdx-js/react': 2.1.5_react@17.0.2
       '@popperjs/core': 2.11.6
-      '@reach/skip-nav': 0.17.0_sfoxds7t5ydpegc3knd667wn6m
+      '@reach/skip-nav': 0.17.0_react-dom@17.0.2+react@17.0.2
       clsx: 1.2.1
       flexsearch: 0.7.31
       focus-visible: 5.2.0
       github-slugger: 1.4.0
       intersection-observer: 0.12.2
       match-sorter: 6.3.1
-      next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
-      next-themes: 0.2.1_dty4et2pnba4zo7o4cegg6bk2e
+      next: 12.3.1_react-dom@17.0.2+react@17.0.2
+      next-themes: 0.2.1_1cf1c24f4f6841ccbbeee08863782ad1
       parse-git-url: 1.0.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       scroll-into-view-if-needed: 2.2.29
     dev: false
 
-  /nextra/2.0.0-beta.30_dty4et2pnba4zo7o4cegg6bk2e:
+  /nextra/2.0.0-beta.30_1cf1c24f4f6841ccbbeee08863782ad1:
     resolution: {integrity: sha512-X8z9n/GWIsS/5BgAHlB8aTLkInmrV0EKRC6rbVAs0zApjVbA/9Wy/KhasyyQVMuyceCJC2jmI367EaBsQ3RuRg==}
     peerDependencies:
       next: '>=9.5.3'
@@ -1781,7 +1781,7 @@ packages:
       github-slugger: 1.4.0
       graceful-fs: 4.2.10
       gray-matter: 4.0.3
-      next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
+      next: 12.3.1_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       rehype-mdx-title: 1.0.0

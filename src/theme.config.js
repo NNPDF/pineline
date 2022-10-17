@@ -1,16 +1,23 @@
 export default {
-  github: 'https://github.com/NNPDF/pineline',
+  // github: 'https://github.com/NNPDF/pineline',
+  // titleSuffix: ' – Pineline',
+  banner: {
+    key: 'Nextra 2',
+    text: 'Nextra 2 Alpha',
+  },
   docsRepositoryBase: 'https://github.com/NNPDF/pineline/',
-  titleSuffix: ' – Pineline',
-  logo: (
-    <>
-      <span className="mr-2 font-extrabold hidden md:inline">Pineline</span>
-      <span className="text-gray-600 font-normal hidden md:inline">
-        Theory predictions for PDF fitting
-      </span>
-    </>
-  ),
-  head: (
+  editLink: {
+    text: 'Edit this page on GitHub',
+  },
+  // logo: (
+  // <>
+  // <span className="mr-2 font-extrabold hidden md:inline">Pineline</span>
+  // <span className="text-gray-600 font-normal hidden md:inline">
+  // Theory predictions for PDF fitting
+  // </span>
+  // </>
+  // ),
+  head: () => (
     <>
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="theme-color" content="#ffffff" />
@@ -57,12 +64,11 @@ export default {
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
     </>
   ),
-  search: true,
-  prevLinks: true,
-  nextLinks: true,
-  defaultMenuCollapsed: true,
-  footer: true,
-  footerEditLink: 'Edit this page on GitHub',
-  footerText: <>{new Date().getFullYear()} © N3PDF.</>,
-  unstable_faviconGlyph: '👋',
+  // search: true,
+  // prevLinks: true,
+  // nextLinks: true,
+  // defaultMenuCollapsed: true,
+  // footer: true,
+  // footerEditLink: 'Edit this page on GitHub',
+  // footerText: <>{new Date().getFullYear()} © N3PDF.</>,
 }
