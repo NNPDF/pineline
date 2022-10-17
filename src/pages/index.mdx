@@ -12,6 +12,7 @@ import { ThemesAnimation } from '@components/nextra/features/themes-animation'
 
 import styles from './index.module.css'
 
+
 export function File({ name, className, ...props }) {
   return <span className={cn(styles.file, className)} {...props}>
     {name}
@@ -98,24 +99,24 @@ export function I18n() {
       font-weight: 600;
     }
     :global(#docs-card) {
-      background-image: url(/assets/card-1.png);
+      background-image: url(${process.env.basePath}/nextra/assets/card-1.png);
       background-size: cover;
       color: #fff;
       text-shadow: 0 0 1rem rgba(0,0,0,0.2);
       aspect-ratio: 135/86;
     }
     :global(.dark #docs-card) {
-      background-image: url(/assets/card-1.dark.png);
+      background-image: url(${process.env.basePath}/nextra/assets/card-1.dark.png);
     }
     :global(#highlighting-card) {
       min-height: 300px;
-      background-image: linear-gradient(to top, transparent, #fff 50%), url(/assets/syntax-highlighting.svg);
+      background-image: linear-gradient(to top, transparent, #fff 50%), url(${process.env.basePath}/nextra/assets/syntax-highlighting.svg);
       background-size: 634px;
       background-position: -6px calc(100% + 4px);
       background-repeat: no-repeat;
     }
     :global(.dark #highlighting-card) {
-      background-image: linear-gradient(to top, transparent, #202020 50%), url(/assets/syntax-highlighting.svg);
+      background-image: linear-gradient(to top, transparent, #202020 50%), url(${process.env.basePath}/nextra/assets/syntax-highlighting.svg);
     }
     :global(.feat-darkmode) {
       min-height: 300px;
@@ -171,7 +172,7 @@ export function I18n() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: 'url(/assets/gradient-bg.jpeg)',
+          backgroundImage: 'url(' + process.env.basePath + '/nextra/assets/gradient-bg.jpeg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           color: '#fff'
@@ -256,12 +257,12 @@ export function I18n() {
             height: 430,
             pointerEvents: 'none',
           }}>
-            <source src="/assets/search.mp4" type="video/mp4"/>
+            <source src={process.env.basePath + "/nextra/assets/search.mp4"} type="video/mp4"/>
           </video>
         </Feature>
         <Feature large style={{
           color: 'white',
-          backgroundImage: 'url(/assets/routing.png), url(/assets/gradient-bg.jpeg)',
+          backgroundImage: 'url(' + process.env.basePath + '/nextra/assets/routing.png), url(' + process.env.basePath + '/nextra/assets/gradient-bg.jpeg)',
           backgroundSize: '140%, 180%',
           backgroundPosition: '130px -8px, top',
           backgroundRepeat: 'no-repeat',
@@ -278,7 +279,7 @@ export function I18n() {
             <div style={{ fontSize: '.9rem', lineHeight: 2 }}>
               <span>{`[Learn more](/more)`}</span>
               <br/>
-              <span>{`![Hero](../public/hero.png)`}</span>
+              <span>{`![Hero](../../public/hero.png)`}</span>
             </div>
           </div>
           <div className={styles.optimization}>
@@ -301,6 +302,6 @@ export function I18n() {
   </div>
 
   <div className="content-container" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
-    <p className="subtitle"><Link href="/docs"><a>Documentation →</a></Link></p>
+    <p className="subtitle"><Link href="/introduction"><a>Get Started →</a></Link></p>
   </div>
 </div>

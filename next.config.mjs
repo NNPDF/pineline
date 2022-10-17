@@ -15,5 +15,8 @@ export default {
     reactStrictMode: true
   }),
   basePath: '/pineline',
+  env: {
+    basePath: '/pineline'
+  },
   images: { unoptimized: true }
 }
