@@ -1,6 +1,31 @@
 {
-  "get-started": "Get Started",
-  "features": "Features",
-  "themes": "Themes",
-  "advanced": "Advanced"
+  "index": {
+    "title": "Nextra",
+    "type": "page",
+    "hidden": true,
+    "theme": {
+      "layout": "raw"
+    }
+  },
+  "docs": {
+    "title": "Documentation",
+    "type": "page"
+  },
+  "showcase": {
+    "title": "Showcase",
+    "type": "page"
+  },
+  "faq": {
+    "title": "FAQ",
+    "type": "menu",
+    "items": {
+      "about": {
+        "title": "About Nextra",
+        "href": "/docs/about"
+      },
+      "community": {
+        "title": "Community"
+      }
+    }
+  }
 }
