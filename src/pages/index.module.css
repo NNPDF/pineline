@@ -52,8 +52,9 @@
 .links {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
-.link {
-  margin: 1em;
+.links>* {
+  margin: 1rem;
 }
