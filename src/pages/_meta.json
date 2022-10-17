@@ -1,6 +1,6 @@
 {
   "index": {
-    "title": "Nextra",
+    "title": "Pineline",
     "type": "page",
     "hidden": true,
     "theme": {
@@ -11,7 +11,7 @@
   "installation": "Installation",
   "tutorials": "Tutorials",
   "examples": "Examples",
-  "nextra": "Nextra",
+  "dev": "Developers' Area",
   "example-page": {
     "title": "Page",
     "type": "page"

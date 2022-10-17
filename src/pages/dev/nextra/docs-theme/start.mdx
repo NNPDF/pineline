@@ -56,19 +56,13 @@ To create a Nextra Docs site manually, you have to install **Next.js**, **React*
 
 <Tabs items={['pnpm', 'npm', 'yarn']}>
   <Tab>
-    ```bash copy
-    pnpm i next react react-dom nextra nextra-theme-docs
-    ```
+    ```bash copy pnpm i next react react-dom nextra nextra-theme-docs ```
   </Tab>
   <Tab>
-    ```bash copy
-    npm i next react react-dom nextra nextra-theme-docs
-    ```
+    ```bash copy npm i next react react-dom nextra nextra-theme-docs ```
   </Tab>
   <Tab>
-    ```bash copy
-    yarn add next react react-dom nextra nextra-theme-docs
-    ```
+    ```bash copy yarn add next react react-dom nextra nextra-theme-docs ```
   </Tab>
 </Tabs>
 
@@ -93,7 +87,7 @@ Create the following `next.config.js` file in your project’s root directory:
 ```js filename="next.config.js" copy
 const withNextra = require('nextra')({
   theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.jsx',
+  themeConfig: './theme.config.jsx'
 })
 
 module.exports = withNextra()
@@ -109,7 +103,11 @@ Full Nextra configurations can be found here:
 import switchIcon from '@components/nextra/icons/switch'
 
 <Cards>
-  <Card icon={switchIcon} title="Configure Nextra" href="/docs/docs-theme/theme-configuration"/>
+  <Card
+    icon={switchIcon}
+    title="Configure Nextra"
+    href="../docs-theme/theme-configuration"
+  />
 </Cards>
 
 ### Create Docs Theme Config
@@ -118,7 +116,7 @@ Lastly, create the corresponding `theme.config.jsx` file in your project’s roo
 
 ```jsx filename="theme.config.jsx" copy
 export default {
-  logo: <span>My Nextra Documentation</span>,
+  logo: <span>My Nextra Documentation</span>
   // ...
 }
 ```
@@ -126,7 +124,11 @@ export default {
 More configuration options for the docs theme can be found here:
 
 <Cards>
-  <Card icon={switchIcon} title="Configure Docs Theme" href="/docs/docs-theme/configuration"/>
+  <Card
+    icon={switchIcon}
+    title="Configure Docs Theme"
+    href="../docs-theme/theme-configuration"
+  />
 </Cards>
 
 ### Ready to Go!

@@ -38,7 +38,7 @@ Show a button that links to your project’s homepage on the navbar. By default,
 
 You can configure `project.link` and `project.icon` to customize the project link, for example make it link to your GitLab repository:
 
-import projectLinkImage from '../../../../../public/nextra/assets/docs/project-link.png'
+import projectLinkImage from '@public/nextra/assets/docs/project-link.png'
 
 <Screenshot src={projectLinkImage} alt="Project link" full />
 
@@ -92,7 +92,7 @@ A banner can be dismissed. By default `banner.key` will be `"nextra-banner"` and
 
 If you have updated your banner content, you should change the key to make sure the banner is shown again. The best practice is to always use a descriptive key for the current content, for example:
 
-import bannerImage from '../../../../../public/nextra/assets/docs/banner.png'
+import bannerImage from '@public/nextra/assets/docs/banner.png'
 
 <Screenshot src={bannerImage} alt="Banner" />
 
@@ -117,7 +117,7 @@ Show previous and next page links on the bottom of the content. It’s useful fo
   ['navigation.next', 'boolean', 'Enable or disable the next page link.'],
 ]}/>
 
-import navigationImage from '../../../../../public/nextra/assets/docs/navigation.png'
+import navigationImage from '@public/nextra/assets/docs/navigation.png'
 
 <Screenshot src={navigationImage} alt="Navigation" full />
 
@@ -178,7 +178,7 @@ In Nextra, the website title will be the content of `<h1>` of each page. If `<h1
   ['titleSuffix', 'string | (() => string)', 'The title suffix.'],
 ]}/>
 
-import titleSuffixImage from '../../../../../public/nextra/assets/docs/title-suffix.png'
+import titleSuffixImage from '@public/nextra/assets/docs/title-suffix.png'
 
 <Screenshot src={titleSuffixImage} alt="Project link" />
 
