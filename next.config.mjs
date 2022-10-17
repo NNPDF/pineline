@@ -5,16 +5,15 @@ const withNextra = nextra({
   themeConfig: './src/theme.config.tsx',
   unstable_staticImage: true,
   unstable_flexsearch: {
-    codeblocks: true,
+    codeblocks: true
   },
-  unstable_defaultShowCopyCode: true,
+  unstable_defaultShowCopyCode: true
 })
 
 export default {
   ...withNextra({
-    reactStrictMode: true,
-    experimental: { images: { allowFutureImage: true } },
+    reactStrictMode: true
   }),
   basePath: '/pineline',
-  // images: { unoptimized: true },
+  images: { unoptimized: true }
 }
