@@ -50,7 +50,10 @@ export function I18n() {
 
 <div className="home-content">
   <div className="content-container">
-    <h1 className="headline">Pineline</h1>
+    <div className="header" style={{}}>
+      <img className="headimg" src={process.env.basePath + "/pineline.svg"}/>
+      <h1 className="headline">Pineline</h1>
+    </div>
     <p className="subtitle">Powerful and reproducible theory predictions, by <a className="nextjs-link" href="https://nextjs.org" target="_blank">N3PDF</a>.</p>
     <p className={"subtitle " + styles.links}>
       <Link href="/introduction">Introduction →</Link>
@@ -77,6 +80,15 @@ export function I18n() {
   `}</style>
 
   <style jsx>{`
+    .header {
+      display: flex;
+      align-items: flex-end;
+    }
+    .headimg {
+      height: 7rem;
+      display: inline-block;
+      margin: 1rem 1rem 0 1rem;
+    }
     .headline {
       font-size: 3.125rem;
       font-size: min(4.375rem, max(8vw, 2.5rem));
