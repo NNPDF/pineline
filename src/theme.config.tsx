@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 
 const logo = (
   <>
-    <span className="mr-2 font-extrabold hidden md:inline">Pineline</span>
-    <span className="text-gray-600 font-normal hidden md:inline">
+    <span className="hidden mr-2 font-extrabold md:inline">Pineline</span>
+    <span className="hidden font-normal text-gray-600 md:inline">
       Theory predictions for PDF fitting
     </span>
   </>
@@ -28,18 +28,36 @@ const head = () => (
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="/apple-icon-180x180.png"
+      href={process.env.basePath + '/apple-icon-180x180.png'}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="192x192"
-      href="/android-icon-192x192.png"
+      href={process.env.basePath + '/android-icon-192x192.png'}
     />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={process.env.basePath + '/favicon-32x32.png'}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href={process.env.basePath + '/favicon-96x96.png'}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href={process.env.basePath + '/favicon-16x16.png'}
+    />
+    <meta
+      name="msapplication-TileImage"
+      content={process.env.basePath + '/ms-icon-144x144.png'}
+    />
   </>
 )
 
@@ -49,7 +67,7 @@ export default {
     // text: 'New Pineline - now released!',
   },
   project: {
-    link: 'https://github.com/NNPDF/pineline',
+    link: 'https://github.com/NNPDF/pineline'
   },
   docsRepositoryBase: 'https://github.com/NNPDF/pineline/',
   titleSuffix: () => {
@@ -58,22 +76,22 @@ export default {
     return ' – Pineline'
   },
   editLink: {
-    text: 'Edit this page on GitHub',
+    text: 'Edit this page on GitHub'
   },
   logo,
   head,
   navigation: {
     prev: true,
-    next: true,
+    next: true
   },
   toc: {
-    float: true,
+    float: true
   },
   sidebar: {
     defaultMenuCollapsed: true,
-    subtitle: ({ title }) => <>{title}</>,
+    subtitle: ({ title }) => <>{title}</>
   },
   footer: {
-    text: <>{new Date().getFullYear()} © N3PDF.</>,
-  },
+    text: <>{new Date().getFullYear()} © N3PDF.</>
+  }
 } as DocsThemeConfig
