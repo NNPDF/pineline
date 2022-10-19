@@ -1,79 +1,108 @@
 # FK tables
 
-Once *PINEKO* is correctly configured (for a detailed guide on how to set up *pineko*
-see [here](https://nnpdf.github.io/pineline/tutorials/setup)), one can start computing 
-`FK tables`. This requires three main steps:
-1. Write the `yaml` file for the wanted dataset and check if all the needed `grids`
-are in correct folder.
+Once _PINEKO_ is correctly configured (for a detailed guide on how to set up
+_pineko_ see [here](https://nnpdf.github.io/pineline/tutorials/setup)), one can
+start computing `FK tables`. This requires three main steps:
+
+1. Write the `yaml` file for the wanted dataset and check if all the needed
+   `grids` are in correct folder.
 2. Compute the `operator cards` and the related `eko operators`.
 3. Compute the `FK table`.
 
-## 1. Yaml file. 
-The first step depends a lot on what kind of dataset we want to construct. For a 
-simple dataset, like the one shown in the **Inputs** section of 
-[here](https://nnpdf.github.io/pineline/tutorials/setup)), it is enough to write 
-```yaml
-    conversion_factor: 1.0
-    operands:
-    - - HERA_NC_225GEV_EP_SIGMARED
-    operation: 'null'
-    target_dataset: HERACOMBNCEP460
-```
-where the name of the dataset, that will be used from now on, is `HERACOMBNCEP460`. Notice that
-the name of the `yaml` file needs to be the same of the dataset (so in this case `HERACOMBNCEP460.yaml`).
-In this case we are using only one grid (under the section `operands`) and no operations 
-are performed on it (an example of a possible operation is `ratio` but of course it requires
-two grids at least).
-Once we are sure that the grid `HERA_NC_225GEV_EP_SIGMARED.pineappl.lz4` is in the correct
-folder, as provided by the `pineko.toml` file, we are ready to proceed to the next step.
+## 1. Yaml file.
 
-## 2. Operator card and eko. 
+The first step depends a lot on what kind of dataset we want to construct. For a
+simple dataset, like the one shown in the **Inputs** section of
+[here](https://nnpdf.github.io/pineline/tutorials/setup)), it is enough to write
+
+```yaml
+conversion_factor: 1.0
+operands:
+  - - HERA_NC_225GEV_EP_SIGMARED
+operation: 'null'
+target_dataset: HERACOMBNCEP460
+```
+
+where the name of the dataset, that will be used from now on, is
+`HERACOMBNCEP460`. Notice that the name of the `yaml` file needs to be the same
+of the dataset (so in this case `HERACOMBNCEP460.yaml`).
+In this case we are using only one grid (under the section `operands`) and no
+operations are performed on it (an example of a possible operation is `ratio`
+but of course it requires two grids at least).
+Once we are sure that the grid `HERA_NC_225GEV_EP_SIGMARED.pineappl.lz4` is in
+the correct folder, as provided by the `pineko.toml` file, we are ready to
+proceed to the next step.
+
+## 2. Operator card and eko.
+
 In order to compute the `operator card`, it is enough to run[^1]:
+
 ```bash
-    pineko theory opcards <theory_number> <dataset_name>
+pineko theory opcards <theory_number> <dataset_name>
 ```
-where `<theory_number>` is the number of the theory card that we want to use (and that has been 
-previously configured as explained [here](https://nnpdf.github.io/pineline/tutorials/setup)) and 
-`<dataset_name>` is just the name of the dataset for which we want to compute the operator cards (for 
-our example it would be `HERACOMBNCEP460`). An example of the output of the command
+
+where `<theory_number>` is the number of the theory card that we want to use
+(and that has been previously configured as explained
+[here](https://nnpdf.github.io/pineline/tutorials/setup)) and `<dataset_name>`
+is just the name of the dataset for which we want to compute the operator cards
+(for our example it would be `HERACOMBNCEP460`). An example of the output of the
+command
+
 ```bash
-    pineko theory opcards 208 HERACOMBNCEP460
+pineko theory opcards 208 HERACOMBNCEP460
 ```
+
 is:
-```bash
-    Analyze HERACOMBNCEP460
-    Success: Wrote card with 23 Q2 points to 
-    data/operator_cards/208/HERA_NC_225GEV_EP_SIGMARED.yaml
+
 ```
-where the `<theory_number>` is `208` in this case. Note that if the `yaml` file contained more than 
-a single grid, the command would iterate over all the grids, producing an operator card 
-for each of them. This is because indeed we need an `eko` operator for each grid and, at the end, a
-`FK table` for each `eko`.
-Having written the `operator cards`, it is time to compute the `ekos`. To do so, it is enough to do:
-```bash
-    pineko theory ekos <theory_number> <dataset_name>
-``` 
-where `<theory_numbers>` and `<dataset_name>` have the same meaning of before. This most likely will 
-take some time (or a lot of time): play some games in the meanwhile (or work on something else if you prefer).
-The *EKO* output is pretty long (and you can read it all from the `logs`) but, if everything just worked
-fine, you should see something similar to this line at the end of the log file
-```bash
-    2022-10-18 10:22:09,873 pineko.theory/INFO: Finished computation of HERA_NC_225GEV_EP_SIGMARED - took 1127.056456 s
+Analyze HERACOMBNCEP460
+Success: Wrote card with 23 Q2 points to
+data/operator_cards/208/HERA_NC_225GEV_EP_SIGMARED.yaml
 ```
+
+where the `<theory_number>` is `208` in this case. Note that if the `yaml` file
+contained more than a single grid, the command would iterate over all the grids,
+producing an operator card for each of them. This is because indeed we need an
+`eko` operator for each grid and, at the end, a `FK table` for each `eko`.
+Having written the `operator cards`, it is time to compute the `ekos`. To do so,
+it is enough to do:
+
+```bash
+pineko theory ekos <theory_number> <dataset_name>
+```
+
+where `<theory_numbers>` and `<dataset_name>` have the same meaning of before.
+This most likely will take some time (or a lot of time): play some games in the
+meanwhile (or work on something else if you prefer).
+The _EKO_ output is pretty long (and you can read it all from the `logs`) but,
+if everything just worked fine, you should see something similar to this line at
+the end of the log file
+
+```
+2022-10-18 10:22:09,873 pineko.theory/INFO: Finished computation of HERA_NC_225GEV_EP_SIGMARED - took 1127.056456 s
+```
+
 Good job! Now you have everything to finally compute the `FK table`.
 
 ### 3. FK tables
-Even for computing `FK tables` the *PINEKO* command is pretty simple
+
+Even for computing `FK tables` the _PINEKO_ command is pretty simple
+
 ```bash
-    pineko theory fks <theory_number> <dataset_name>
+pineko theory fks <theory_number> <dataset_name>
 ```
-and, even in this case, this could take a while. The output of this command should be something
-similar to 
-```bash
-    2022-10-18 10:32:14,240 pineko.theory/INFO: Start computation of HERA_NC_225GEV_EP_SIGMARED
-    2022-10-18 10:32:14,241 pineko.theory/INFO: max_as=3, max_al=0, xir=1.000000, xif=1.000000
-    2022-10-18 10:32:16,500 pineko.theory/INFO: Finished computation of HERA_NC_225GEV_EP_SIGMARED - took 2.259366 s
+
+and, even in this case, this could take a while. The output of this command
+should be something similar to
+
 ```
+2022-10-18 10:32:14,240 pineko.theory/INFO: Start computation of HERA_NC_225GEV_EP_SIGMARED
+2022-10-18 10:32:14,241 pineko.theory/INFO: max_as=3, max_al=0, xir=1.000000, xif=1.000000
+2022-10-18 10:32:16,500 pineko.theory/INFO: Finished computation of HERA_NC_225GEV_EP_SIGMARED - took 2.259366 s
+```
+
 ## Notes
-[^1]: Currently *PINEKO* can run only from the folder in which the `pineko.toml` file
-is. 
+
+[^1]:
+    Currently _PINEKO_ can run only from the folder in which the `pineko.toml`
+    file is.
