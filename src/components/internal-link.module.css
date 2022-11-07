@@ -1,0 +1,8 @@
+.link {
+  text-decoration: underline dashed;
+  color: currentcolor;
+}
+
+.link:hover {
+  text-shadow: 0 0 1px;
+}

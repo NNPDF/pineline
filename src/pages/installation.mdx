@@ -1,6 +1,4 @@
----
-title: Installation
----
+import InLink from '@components/internal-link'
 
 # Installation
 
@@ -22,3 +20,76 @@ The full pineline, able to compute grids as well.
 ```sh
 pip install 'pineline[full]'
 ```
+
+## Third-party dependencies
+
+There are few to none further dependencies needed for most use cases.
+
+In particular the <InLink href="#basic-installation">Basic installation</InLink>
+above provides all tools required to _compute_ a theory (starting from grids).
+But there might be more operations, that even if not _strictly required_, they
+are part of the normal workflow.
+
+One of the most common one is to the test the predictions for a given
+grid/FkTable, applying a known PDF set.
+For this basic application, at least the [LHAPDF](https://lhapdf.hepforge.org/)
+library (and Python package) is required.
+
+### From scratch
+
+1. Prepare a fresh environment
+
+   ```sh
+   virtualenv env
+   ```
+
+2. Download the `.sh` scripts in
+   [`N3PDF/workflows/packages/lhapdf`](https://github.com/N3PDF/workflows/tree/v2/packages/lhapdf)
+
+   > **Note:**
+   > The scripts in this folder are extremely simple, and can be inspected and
+   > manually typed in the shell. Here, we are referring to this folder just
+   > because this scripts are maintained by (and for the convenience of) N3PDF
+   > members, so `install.sh` might occasionally contain workarounds to run the
+   > last (or recent enough) version of LHAPDF.
+
+3. Export `$PREFIX` environment variable
+
+   ```sh
+   export PREFIX=$(realpath ./env)
+   ```
+
+4. Run the `install.sh` script:
+
+   ```sh
+   sh install.sh
+   ```
+
+5. (Optional) To clean up, run the `clean.sh` script:
+
+   ```sh
+   sh clean.sh
+   ```
+
+Finally, you can install `pineline` as described above, or any other Python
+package as well, just using `pip`.
+
+### Container
+
+Another option, especially useful for automated workflows and remote
+environments, it is to run inside a
+[container](https://www.docker.com/resources/what-container/), building a
+suitable one ahead of time.
+
+For the specific case of LHAPDF, a suitable
+[`lhapdf`](https://github.com/N3PDF/workflows/pkgs/container/lhapdf) container
+is pre-built and provided.
+It can be used simply pulling it:
+
+```sh
+podman pull ghcr.io/n3pdf/lhapdf:v2
+```
+
+> A couple of other containers, containing pre-installed tools like APFEL and
+> QCDNUM (specifically their Python packages/bindings), are available in the
+> same repository.
