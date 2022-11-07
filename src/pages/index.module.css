@@ -33,20 +33,40 @@
   font-weight: 300;
 }
 
-.titlebox {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  margin: 2rem;
+.content-container {
+  max-width: 90rem;
+  padding-left: max(env(safe-area-inset-left), 1.5rem);
+  padding-right: max(env(safe-area-inset-right), 1.5rem);
+  margin: 0 auto;
 }
 
-.titlebox > h5 {
-  font-style: italic;
-  font-weight: 500;
+.header {
+  display: flex;
+  align-items: flex-end;
+}
 
-  margin-top: 0.3rem;
+.headimg {
+  height: 7rem;
+  display: inline-block;
+  margin: 1rem 1rem 0 1rem;
+}
+
+.headline {
+  font-size: 3.125rem;
+  font-size: min(4.375rem, max(8vw, 2.5rem));
+  font-weight: 700;
+  font-feature-settings: initial;
+  letter-spacing: -0.12rem;
+  margin-left: -0.2rem;
+  margin-top: 3.4rem;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  font-size: min(1.3rem, max(3.5vw, 1.2rem));
+  font-feature-settings: initial;
+  line-height: 1.6;
 }
 
 .links {
@@ -55,6 +75,49 @@
   flex-wrap: wrap;
 }
 
-.links>* {
+.links > * {
   margin: 1rem;
+}
+
+.link {
+  color: currentcolor !important;
+  text-decoration: none !important;
+  font-weight: 600;
+}
+
+.gombo {
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  height: 50vh;
+  aspect-ratio: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gombo > h3 {
+  text-shadow: 1px 1px 5px black;
+}
+
+@media screen and (max-width: 1200px) {
+  .gombo {
+    min-height: 300px;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+}
+
+.sanrossore {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 0.6rem;
+}
+
+.sanrossore > a {
+  color: #ccc;
+  font-size: 0.8rem;
+  font-style: italic;
+  text-decoration: none;
 }
