@@ -6,7 +6,7 @@ authors = ["Alessandro Candido <candido.ale@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10,<3.11"
+python = "^3.8,<3.11"
 eko = "^0.10.2"
 pineko = "^0.2.5"
 pineappl = "^0.5.7"
