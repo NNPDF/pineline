@@ -13,7 +13,7 @@ An example of such file is:
 ymldb = "data/yamldb"
 grids = "data/grids"
 theory_cards = "data/theory_cards"
-operator_card_template = "data/operator_cards/_template.yaml"
+operator_card_template_name = "_template.yaml"
 # outputs
 operator_cards = "data/operator_cards"
 ekos = "data/ekos"
@@ -39,7 +39,9 @@ The inputs that _pineko_ needs are listed in the `#inputs` part of the
   are the objects that _PINEKO_ convolutes with the _EKOs_ to produce FK tables
   and they can be computed using _PINEFARM_.
 - The `template` operator card that provides some of the inputs needed by _EKO_
-  and some placeholders to be filled by _PINEKO_.
+  and some placeholders to be filled by _PINEKO_. _PINEKO_ will look for the 
+  template operator card inside the asked theory folder inside the operator
+  cards folder.
 
 An example of a rather simple `yaml` file for the dataset `HERACOMBNCEP460` is
 the following
@@ -184,8 +186,8 @@ _PINEKO_ provides three kinds of outputs:
 The `operator cards` are the runcards of _EKO_. Then, they are needed by _EKO_,
 together with the `theory cards`,
 to produce the `eko` operators to be convoluted with the `grids`. _PINEKO_
-automatically writes the relevant `operator card` for the requested dataset
-using the provided `template` and `grid`. An example of such runcard for the
+automatically writes the relevant `operator card` for the requested dataset and 
+theory using the provided `template` and `grid`. An example of such runcard for the
 dataset `HERACOMBNCEP460` is
 
 ```yaml
