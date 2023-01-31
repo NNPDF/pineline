@@ -1,0 +1,107 @@
+# From 0 to a fit: implmenetation of vrap as part of the _pineline_
+
+Problem outline:
+We want to isolate and study the effect of a NNLO contribution for a particular process in a fit.
+We will use Fixed-Target Drell-Yan in a NNPDF4.0-like fit.
+We start by selecting an appropiate Monte Carlo generator which will be used to compute the partonic cross section.
+The generator is then interfaced with `pinefarm` to generate `pineappl` grids.
+Once grids are obtained we can generate evolution kernel operators (EKOs) to transform them into FKTables
+so that they can be used as part of a fit.
+
+## Grid generation
+Since our goal is to study the impact of the NNLO contribution to a particular cross-section,
+it is necessary to choose a parton-level fixed-order generator.
+For this exercise we have choosen [`vrap`](https://www.slac.stanford.edu/~lance/Vrap/)[^1]
+which is able to compute Drell-Yan at NNLO with fixed-target kinematics.
+
+In order to be able to produce grids with it, we have modified the original `vrap`
+to also output `pineappl` grids after the calculation of a cross-section.
+We have dubbed this "vrap with pineappl" with the tongue-in-cheeck name of [Hawaiian Vrap](https://github.com/NNPDF/hawaiian_vrap).
+
+> **_NOTE:_** An exmaple of usage for `hawaiian vrap` can be found [here](https://github.com/NNPDF/hawaiian_vrap/tree/main/NNPDFCards)
+
+### Implementation of the `vrap` interface
+The `hawaiian vrap` interface in `pinefarm` is [already available](https://github.com/NNPDF/pinefarm/blob/main/src/pinefarm/external/vrap.py).
+In this section we will go through the essential aspects of implementing a new program in `pinefarm`.
+
+For that we need to clone the `pinefarm` repository and install it in developer mode.
+`pinefarm`, which glues together other pieces of code, is a python code and we use [poetry](https://python-poetry.org) for package management and development.
+
+```bash
+git clone https://github.com/NNPDF/pinefarm.git
+cd pinefarm
+poetry shell
+pip install -e .
+```
+
+#### 1. Installation phase
+Since `pinefarm` builds up an environment with all the necessary packages, the first step is to add an installer to the `install.py` [file](https://github.com/NNPDF/pinefarm/blob/b6993605ef3ab6b5fa711f384d8fdcbf2108c8a7/src/pinefarm/install.py#L85).
+
+The code below performs a couple of check and then installs `hawaiian vrap`.
+
+```python
+def hawaiian_vrap():
+    # Ensure that pineappl and lhapdf are installed
+    _ = lhapdf()
+    _ = pineappl(capi=True)
+
+    # Use the configs module to have a generic vrap executable path
+    vrapx = configs.configs["commands"]["vrap"]
+
+    # Have a rule to check whether vrap is installed as we want
+    if is_exe(vrapx):
+        print("✓ Found vrap")
+        return True
+
+    # Download and instal the desired version of vrap
+    url = f"https://github.com/NNPDF/hawaiian_vrap/archive/refs/tags/1.4.tar.gz"
+    print(f"Installing the version {vrap.VERSION} of vrap from {url}")
+
+    # Uncompress the downloaded vrap and install it in the prefix path set by config
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = pathlib.Path(tmp)
+        vrap_tar = tmp_path / f"hawaiian_vrap-{vrap.VERSION}.tar.gz"
+        with requests.get(url) as r:
+            vrap_tar.write_bytes(r.content)
+
+        with tarfile.open(vrap_tar, "r:gz") as tar:
+            tar.extractall(tmp_path)
+
+        # Compile vrap
+        tmp_vrap = tmp_path / f"hawaiian_vrap-{vrap.VERSION}"
+        subprocess.run("autoreconf -fiv", cwd=tmp_vrap / "src", shell=True, check=True)
+        build_dir = tmp_vrap / "build"
+        build_dir.mkdir(exist_ok=True)
+        subprocess.run(
+            ["../src/configure", "--prefix", configs.configs["paths"]["prefix"]],
+            cwd=build_dir,
+            check=True,
+        )
+        subprocess.run(["make", "install"], cwd=build_dir, check=True)
+
+    return is_exe(vrapx)
+```
+
+Once the installation is prepared, add a command line option to install it by copying one of the options [here](https://github.com/NNPDF/pinefarm/blob/b6993605ef3ab6b5fa711f384d8fdcbf2108c8a7/src/pinefarm/cli/install.py#L29).
+
+Inside the `poetry shell`:
+```bash
+pinefarm install vrap
+```
+
+#### 2. Write a runner for `hawaiian vrap`
+There are several runners already available in the `pinefarm` for various degrees of complexity in the [external folder](https://github.com/NNPDF/pinefarm/tree/main/src/pinefarm/external).
+The runner for `hawaiian vrap`, since it has to deal with a relatively simple format of runcard and only one type of process is not very complicated so we can go through it step by step.
+
+
+## Evolution kernel operators and FKTables
+We have made available detailed guides for the [set-up](../tutorials/setup) and [generation of FK Tables](../tutorials/fktable) using `pineko`.
+Here we outline the most relevant steps.
+
+## Usage within NNPDF
+
+
+
+
+[^1]:
+    Phys.Rev.D69:094008,2004 [hep-ph/0312266](https://arxiv.org/abs/hep-ph/0312266)
