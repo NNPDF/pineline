@@ -5,7 +5,7 @@ We are going to start with the NNPDF4.0 NNLO global fit.
 While DIS observables are computed at NNLO, hadronic observables are instead computed
 at NLO and then multiplied by a k-factor for the NNLO contribution.
 
-In order to include NNLO contributions for a given observable we will need to produce grids at the desired order for each obserable.
+In order to include NNLO contributions for a given observable we will need to produce grids at the desired order for each observable.
 In particular we choose one of the Fixed-Target Drell-Yan datasets (E605).
 We need to find a Monte Carlo generator able to produce NNLO predictions _and_ `pineappl` grids[^1].
 Then the generator is interfaced to `pinefarm` in order to ensure the theory settings
@@ -19,8 +19,8 @@ and a `>3.9` installation.
 
 ## Grid generation
 Since our goal is to study the impact of the NNLO contribution to a particular cross-section,
-it is necessary to choose an appropiate parton-level fixed-order generator.
-For this exercise we have choosen [`vrap`](https://www.slac.stanford.edu/~lance/Vrap/)[^3].
+it is necessary to choose an appropriate parton-level fixed-order generator.
+For this exercise we have chosen [`vrap`](https://www.slac.stanford.edu/~lance/Vrap/)[^3].
 which is able to compute Drell-Yan at NNLO with fixed-target kinematics.
 
 In order to be able to produce grids with it, we have modified the original `vrap`
@@ -269,20 +269,75 @@ pinefarm run pinecards/DYE605 theories/theory_200_1.yaml
 the results will be output to the `results/DYE605-<timestamp>` folder.
 
 ## Evolution kernel operators and FKTables
-We have made available detailed guides for the [set-up](../tutorials/setup) and [generation of FK Tables](../tutorials/fktable) using `pineko`.
-Here we outline the most relevant steps.
 
-```bash
+In the output folder of the run one can find the runcard that have been used for the run of the Monte Carlo alongside the output results and the final `pineappl` grid.
+
+This grid is differential in `x_1`, `x_2` and `Q^{2}`.
+The PDF fit is however done at a fixed scale `Q_0`.
+In order to avoid having to evolve the PDF to the process scale 
+we are going to construct Evolution Kernel Operator using EKO[^4]
+to instead evolve the grid down to the fitting scale `Q_0`.
+
+In the NNPDF language the grids convoluted with an EKO are called Fast-Kernel (FK) Tables.
+The program that takes `pineappl`(s) and makes it into `FKTables`
+is called `pineko`.
+
+The usage of `pineko` is straightforward thanks to the bootstrap
+command including with the software.
+There are detailed guides for the [set-up](../tutorials/setup) and [generation of FK Tables](../tutorials/fktable).
+
+The following steps are those of the [FK Table](../tutorials/fktable)
+so we will outline here the specific differences for our dataset.
+
+We need a small file defining any strange operations to be done with the dataset.
+This is useful when, for instance, the experimental observable is a ratio
+of other quantities.
+In this case however, there is nothing to modify and the `yaml` file is very simple.
+```yaml
+operands:
+- - DYE605
+operation: 'null'
+target_dataset: DYE605
 ```
+
+As theory card we can use the same one we used for the generation of the
+grid in the previous step but we will modify the number to 600
+(since theory 200 already exists).
+We can then generate the EKO.
+
+This is done with two commands.
+The first one will generate the runcard for EKO while the second will create the EKO.
+Although in general we will be using the default settings,
+sometimes it might be useful to modify the runcard
+(for instance, we might be willing to sacrifice some accuracy in exchange for smaller grids).
+
+```
+pineko theory opcards 600 DYE605
+pineko theory ekos 600 DYE605
+```
+
+Finally, we can write the final FK Table:
+
+```
+pineko theory fks 600 DYE605
+```
+
+We are ready to fit!
+
+NNPDF theories are available in the [theories repository](https://github.com/NNPDF/theories).
+The layout of the repository is such that the generation of the EKOs and FK Tables should be straightforward following the steps of this tutorial.
+
+The final FK Tables for a given theory can be downloaded using the
+`vp-get` command provided by [validphys](https://docs.nnpdf.science/vp/download.html#the-vp-get-tool).
 
 ## Usage within NNPDF
 
-Once we have the new FKTable prepared `DYE605.pineappl.lz4`, it is time to run a fit!
+Once we have the new FK Table prepared `DYE605.pineappl.lz4`, it is time to run a fit!
 For this we will use the NNPDF fitting framework.
 
 > **_NOTE:_** If you have never used the NNPDF fitting framework before please follow the [installation guide](https://docs.nnpdf.science/get-started/installation.html) and the [how to run a fit](https://docs.nnpdf.science/tutorials/run-fit.html) tutorial.
 
-In order to use our new FKTables for DYE605, we are going to modify one of the [theories](https://docs.nnpdf.science/theory/theoryindex.html) already available within NNPDF.
+In order to use our new FK Tables for DYE605, we are going to modify one of the [theories](https://docs.nnpdf.science/theory/theoryindex.html) already available within NNPDF.
 We are going to use Theory 400 which includes NNLO grids for all DIS observables and NLO grids (with k-factors for the NNLO contribution) for hadronic observables.
 
 ```bash
@@ -306,3 +361,5 @@ Do not forget to remove the QCD c-factor from the [fitting runcard](https://gith
     https://docs.nnpdf.science
 [^3]:
     Phys.Rev.D69:094008,2004 [hep-ph/0312266](https://arxiv.org/abs/hep-ph/0312266)
+[^4]:
+    https://eko.readthedocs.io/
