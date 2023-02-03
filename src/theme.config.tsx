@@ -63,10 +63,6 @@ const head = () => (
 )
 
 export default {
-    banner: {
-        // key: 'New Pineline',
-        // text: 'New Pineline - now released!',
-    },
     project: {
         link: 'https://github.com/NNPDF/pineline'
     },
