@@ -283,12 +283,12 @@ The program that takes `pineappl`(s) and makes it into `FKTables` is called `pin
 The usage of `pineko` is straightforward thanks to the bootstrap command including with the software.
 There are detailed guides for the [set-up](../tutorials/setup) and [generation of FK Tables](../tutorials/fktable).
 
-The following steps are those of the [FK Table](../tutorials/fktable)
-so we will outline here the specific differences for our dataset.
+In the following, the steps in the [FK Table guide](../tutorials/fktable) will be followed,
+summarizing where specific commands or files need to be changed.
 
-We need a small file defining any strange operations to be done with the dataset.
-This is useful when, for instance, the experimental observable is a ratio of other quantities.
-In this case however, there is nothing to modify and the `yaml` file is very simple.
+The first step, is to create a [`yaml` file](../tutorials/fktable#1-yaml-file) defining any operations
+to be performed on the FK Tables to obtain the predictions for the dataset.
+In this case there are no operations so the the `yaml` file is simply:
 ```yaml
 operands:
 - - DYE605
@@ -298,21 +298,18 @@ target_dataset: DYE605
 
 As theory card we can use the same one we used for the generation of the
 grid in the previous step but we will modify the number to 600 (since theory 200 already exists).
-We can then generate the EKO.
+We can then [generate the EKO](../tutorials/fktable#2-operator-card-and-eko).
 
 This is done with two commands.
 The first one will generate the runcard for EKO while the second will create the EKO.
-Although in general we will be using the default settings,
-sometimes it might be useful to modify the runcard
+Although in general we will be using the default settings, sometimes it might be useful to modify the runcard
 (for instance, we might be willing to sacrifice some accuracy in exchange for smaller grids).
-
 ```
 pineko theory opcards 600 DYE605
 pineko theory ekos 600 DYE605
 ```
 
-Finally, we can write the final FK Table:
-
+Finally, we can [write the final FK Table](../tutorials/fktable#3-fk-tables):
 ```
 pineko theory fks 600 DYE605
 ```
