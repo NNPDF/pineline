@@ -1,0 +1,357 @@
+# Change theory predictions in a PDF fits.
+
+In this tutorial we are going to study the effect of a theory change in a PDF fit.
+We are going to start with the NNPDF4.0 NNLO global fit.
+While DIS observables are computed at NNLO, hadronic observables are instead computed
+at NLO and then multiplied by a k-factor for the NNLO contribution.
+
+In order to include NNLO contributions for a given observable we will need to produce grids at the desired order for each observable.
+In particular we choose one of the Fixed-Target Drell-Yan datasets (E605).
+We need to find a Monte Carlo generator able to produce NNLO predictions _and_ `pineappl` grids[^1].
+Then the generator is interfaced to `pinefarm` in order to ensure the theory settings
+are compatible with the rest of the 4.0 dataset.
+
+After the grids are generated, we transform them into FastKernel tables so that they can be used as part of a fit.
+At the end we outline the steps necessary in order to make the predictions available to the NNPDF fitting framework[^2].
+
+In principle the tutorial should be easy to follow with minimal knowledge of `python`
+and a `>=3.8` installation.
+
+## Grid generation
+Since our goal is to study the impact of the NNLO contribution to a particular cross-section,
+it is necessary to choose an appropriate parton-level fixed-order generator.
+For this exercise we have chosen [`vrap`](https://www.slac.stanford.edu/~lance/Vrap/)[^3].
+which is able to compute Drell-Yan at NNLO with fixed-target kinematics.
+
+In order to be able to produce grids with it, we have modified the original `vrap`
+to also output `pineappl` grids after the calculation of a cross-section.
+We have dubbed this "vrap with pineappl" with the tongue-in-cheek name of [Hawaiian Vrap](https://github.com/NNPDF/hawaiian_vrap).
+
+> **_NOTE:_** An example of usage for `hawaiian vrap` can be found [here](https://github.com/NNPDF/hawaiian_vrap/tree/main/NNPDFCards).
+
+Once we have a MC generator ready, we can implement it as part of `pinefarm` and, once we do, we can use it to generate as many new theory predictions for different observables as want!
+
+### 1. Prepare a development installation of `pinefarm`
+The `hawaiian vrap` interface in `pinefarm` is [available](https://github.com/NNPDF/pinefarm/blob/main/src/pinefarm/external/vrap.py) in github,
+with a few extra points (for instance, it is also used to generate positivity observables).
+In this section we will go only through the essential aspects of implementing a new program in `pinefarm` in order to generate the predictions at NNLO for E605.
+
+The first step is to clone the `pinefarm` repository and install it in developer mode.
+`pinefarm`, which glues together other pieces of code, is a python code and we use [poetry](https://python-poetry.org) for package management and development.
+
+```bash
+git clone https://github.com/NNPDF/pinefarm.git
+cd pinefarm
+poetry shell
+pip install -e .
+```
+
+### 2. Add an automatic installer
+Since `pinefarm` builds up an environment with all the necessary packages, the first step is to add an installer to the `install.py` [file](https://github.com/NNPDF/pinefarm/blob/b6993605ef3ab6b5fa711f384d8fdcbf2108c8a7/src/pinefarm/install.py#L85).
+
+The code below performs a couple of checks and then installs `hawaiian vrap`.
+
+```python
+def hawaiian_vrap():
+    # Ensure that pineappl and lhapdf are installed
+    _ = lhapdf()
+    _ = pineappl(capi=True)
+
+    # Use the configs module to have a generic vrap executable path
+    vrapx = configs.configs["commands"]["vrap"]
+
+    # Have a rule to check whether vrap is installed as we want
+    if is_exe(vrapx):
+        print("✓ Found vrap")
+        return True
+
+    # Download and instal the desired version of vrap
+    url = f"https://github.com/NNPDF/hawaiian_vrap/archive/refs/tags/1.4.tar.gz"
+    print(f"Installing the version {vrap.VERSION} of vrap from {url}")
+
+    # Uncompress the downloaded vrap and install it in the prefix path set by config
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = pathlib.Path(tmp)
+        vrap_tar = tmp_path / f"hawaiian_vrap-{vrap.VERSION}.tar.gz"
+        with requests.get(url) as r:
+            vrap_tar.write_bytes(r.content)
+
+        with tarfile.open(vrap_tar, "r:gz") as tar:
+            tar.extractall(tmp_path)
+
+        # Compile vrap
+        tmp_vrap = tmp_path / f"hawaiian_vrap-{vrap.VERSION}"
+        subprocess.run("autoreconf -fiv", cwd=tmp_vrap / "src", shell=True, check=True)
+        build_dir = tmp_vrap / "build"
+        build_dir.mkdir(exist_ok=True)
+        subprocess.run(
+            ["../src/configure", "--prefix", configs.configs["paths"]["prefix"]],
+            cwd=build_dir,
+            check=True,
+        )
+        subprocess.run(["make", "install"], cwd=build_dir, check=True)
+
+    return is_exe(vrapx)
+```
+
+Once the installation is prepared, add a command line option to install it by copying one of the options [here](https://github.com/NNPDF/pinefarm/blob/b6993605ef3ab6b5fa711f384d8fdcbf2108c8a7/src/pinefarm/cli/install.py#L29).
+
+Then, inside the `poetry shell`, one can do:
+```bash
+pinefarm install vrap
+```
+
+This will automatically check whether `lhapdf` and `pineappl` are available and will install them otherwise.
+
+### 3. Write a runner for `hawaiian vrap`
+There are several runners already available in the `pinefarm` for various degrees of complexity in the [external folder](https://github.com/NNPDF/pinefarm/tree/main/src/pinefarm/external).
+The runner for `hawaiian vrap`, since it has to deal with a relatively simple format of runcard and only one type of process, is not very complicated.
+We will go through it step by step.
+
+#### 1. Initializer of the runner
+We need to write a subclass of `pinefarm.external.interface.External`. 
+Every run of `pinefarm` for a particular program starts by instantiating this class and taking a `pinecard` which defines the run (see examples [here](https://github.com/NNPDF/pinecards/) and a [theory card](https://github.com/NNPDF/pinefarm/blob/main/extras/theories/theory_200_1.yaml) which defines all theory settings. 
+
+The instantiation of the class should read both and construct the right runcard for the target program.
+In the case of `hawaiian vrap` this is straightforward since the runcard for the program is quite simple.
+We will see this explicitly below.
+
+As an example [here](https://github.com/NNPDF/hawaiian_vrap/blob/main/NNPDFCards/DYE605.dat) we have a runcard for `hawaiian vrap` to be compared with the associated [pinecard](https://github.com/NNPDF/pinecards/blob/master/DYE605/vrap.yaml), which is just a `yaml` version of the same information.
+
+We should also read all the information from the theory runcard and fill in
+the necessary parameters in the generator runcard.
+In this tutorial we are going to limit ourselves to the perturbative order (`PTO`) and translate it to the notation that `vrap` uses (`LO`, `NLO`, `NNLO`).
+
+Although the grid is PDF independent, the generator (usually) require a PDF to run.
+This is given by the `pdf` attribute: `self.pdf`.
+This `.pdf` will be used at the end of the run in order to check the results are correct.
+
+```python
+class Vrap(External):
+    def __init__(self, pinecard, theorycard, *args, **kwargs):
+        super().__init__(pinecard, theorycard, *args, **kwargs)
+
+        # Read and translate perturbative order
+        order = theorycard.get("PTO")
+        if order == 0:
+            vrap_order = "LO"
+        elif order == 1:
+            vrap_order = "NLO"
+        elif order >= 2:
+            vrap_order = "NNLO"
+        else:
+            raise ValueError(f"Order PTO={order} not understood by vrap runner")
+
+        # It will be DYE605.dat if the name of the pinecard is DYE605
+        self._kin_card = f"{self.name}*.dat")
+
+        # Read the input card
+        input_card = self.source / "vrap.yaml"
+        yaml_dict = yaml.safe_load(input_card.open("r", encoding="utf-8"))
+        yaml_dict["Order"] = vrap_order
+        input_yaml["PDFfile"] = f"{self.pdf}.LHgrid"
+
+        # Write down the vrap runcard
+        self._input_card = (self.dest / self.name).with_suffix(".dat")
+        as_lines = [f"{k} {v}" for k, v in yaml_dict.items()]
+        self._input_card.write_text("\n".join(as_lines))
+
+    def collect_versions(self):
+        """Currently the version is defined by this file"""
+        return {"vrap_version": "1.4"}
+```
+
+#### 2. The `run` method
+Once the translation layer (through the instantiation of the class) has prepared the runcards,
+the next step is to define how the code will be `run` using the `run` method of the class.
+We use [`subprocess.run`](https://docs.python.org/3/library/subprocess.html#subprocess.run) to run the command.
+The output folder is auto-filled by `pinefarm` as the `dest` property which we use to run the command using `subprocess.run` (`cwd=self.dest`).
+The `pineappl` result of `hawaiian vrap` is called `test.pineappl.lz4` so at the end we modify it to the desired name (in our case just the name of the dataset, also filled by `pinefarm`: `self.grid`).
+
+```python
+    def run(self):
+        command = configs.configs["commands"]["vrap"]
+        subprocess.run([command, self._input_card, self._kin_card], cwd=self.dest, check=True)
+
+        pineappl_file = self.dest / "test.pineappl.lz4"
+
+        # Optimize the grid 
+        grid = pineappl.grid.Grid.read(pineappl_file.as_posix())
+        grid.optimize()
+        grid.write(self.grid)
+
+        # Read up also the MC results for later comparison
+        _, _, cv, stat = np.loadtxt(self.dest / "results.out", unpack=True)
+        self._results = (cv, stat)
+```
+
+#### 3. Checking the results
+At the end of every run, `pinefarm` will try to check that the results from the `pineappl` grid are compatible with the results obtained during the integration.
+The class is required to fill a `pandas.DataFrame` with `result`, `error`, `sv_min` and `sv_max` using the `results` method. 
+The `sv_` variables are for scale variations if the Monte Carlo generator provides numbers for a check.
+
+```python
+    def results(self):
+        cv, stat_errors = self._results
+        final_cv = np.sum(cv, axis=0)
+        final_stat = np.sqrt(np.sum(np.power(stat_errors, 2), axis=0))
+
+        d = {
+            "result": final_cv,
+            "error": final_stat,
+            "sv_min": np.zeros_like(final_cv),
+            "sv_max": np.zeros_like(final_cv),
+        }
+
+        return pd.DataFrame(data=d)
+```
+
+### 4. Run!
+
+After the runner is prepared, we can now run `vrap` for any dataset by preparing the run information in the appropriate format.
+There are many examples in the public [`pinecards` repository](https://github.com/NNPDF/pinecards).
+
+Every folder in the repository is a separate ``pinecard``.
+Since different programs take different inputs, the content of the folder might change from program to program.
+
+In the generic `metadata.txt` file we include any relevant information about the observable:
+```txt
+description='E605 Fixed-Target Drell-Yan cross section measurement with nuclear copper target'
+hepdata=10.17182/hepdata.22831/t1-t8
+data_url=
+nnpdf_id=DYE605
+fktable_id=DYE605
+x1_label=sqrt(tau)
+x1_label_tex=$\sqrt(\tau)$
+x1_unit=
+x2_label=y
+x2_label_tex=$y$
+x2_unit=
+y_label_tex = $s*\frac{d^2\sigma}{d\sqrt(\tau)dy}$
+y_label=s*d^2sigma/dsqrt(tau)/dy
+y_unit=pb GeV^2
+```
+
+Then the information necessary to run the program is given as a human (and computer) readable `.yaml` file.
+
+```yaml
+Collider: piso
+E_CM: 38.8
+Alphat: 0.00757002271
+Q: 0
+VectorBoson: Zgamma
+muFoverQ: 1.0
+muRoverQ: 1.0
+Nf: 5
+UseOtherPDF: "yes"
+PDFset: 0
+AlphasZ: 0.118
+Order: NLO
+PrintDirection: Forward
+NNLO_only: "no"
+RandomSeed: 22334
+```
+
+Note that some of the information on this file, such as `Order` will be rewritten by the translation layer that we have prepared in the previous steps.
+Although in this example we have limited ourselves to the order of the calculation, in principle all theory-related information should be appropriately modified by the translation layer.
+
+Finally, in the case of `hawaiian vrap` the kinematics are provided as a separate `.dat` file containing the values of Q and rapidity for the desired points.
+```
+7.10428  -0.2
+7.30604  -0.2
+7.5078  -0.2
+```
+
+Now we are ready to run:
+```bash
+pinefarm run pinecards/DYE605 theories/theory_200_1.yaml
+````
+the results will be output to the `results/DYE605-<timestamp>` folder.
+
+## Evolution kernel operators and FKTables
+
+In the output folder of the run one can find the runcard that have been used for the run of the Monte Carlo alongside the output results and the final `pineappl` grid.
+
+This grid is differential in $x_{1}$, $x_{2}$ and $Q^{2}$.
+The PDF fit is however done at a fixed scale $Q_{0}^{2}$.
+In order to avoid having to evolve the PDF to the process scale 
+we are going to construct Evolution Kernel Operator using EKO[^4] to instead evolve the grid down to the fitting scale $Q_{0}^{2}$.
+
+In the NNPDF language the grids convoluted with an EKO are called Fast-Kernel (FK) Tables.
+The program that takes `pineappl`(s) and makes it into `FKTables` is called `pineko`.
+
+The usage of `pineko` is straightforward thanks to the bootstrap command including with the software.
+There are detailed guides for the [set-up](../tutorials/setup) and [generation of FK Tables](../tutorials/fktable).
+
+In the following, the steps in the [FK Table guide](../tutorials/fktable) will be followed,
+summarizing where specific commands or files need to be changed.
+
+The first step, is to create a [`yaml` file](../tutorials/fktable#1-yaml-file) defining any operations
+to be performed on the FK Tables to obtain the predictions for the dataset.
+In this case there are no operations so the the `yaml` file is simply:
+```yaml
+operands:
+- - DYE605
+operation: 'null'
+target_dataset: DYE605
+```
+
+As theory card we can use the same one we used for the generation of the
+grid in the previous step but we will modify the number to 600 (since theory 200 already exists).
+We can then [generate the EKO](../tutorials/fktable#2-operator-card-and-eko).
+
+This is done with two commands.
+The first one will generate the runcard for EKO while the second will create the EKO.
+Although in general we will be using the default settings, sometimes it might be useful to modify the runcard
+(for instance, we might be willing to sacrifice some accuracy in exchange for smaller grids).
+```
+pineko theory opcards 600 DYE605
+pineko theory ekos 600 DYE605
+```
+
+Finally, we can [write the final FK Table](../tutorials/fktable#3-fk-tables):
+```
+pineko theory fks 600 DYE605
+```
+
+We are ready to fit!
+
+NNPDF theories are available in the [theories repository](https://github.com/NNPDF/theories).
+The layout of the repository is such that the generation of the EKOs and FK Tables should be straightforward following the steps of this tutorial.
+
+The final FK Tables for a given theory can be downloaded using the
+`vp-get` command provided by [validphys](https://docs.nnpdf.science/vp/download.html#the-vp-get-tool).
+
+## Usage within NNPDF
+
+Once we have the new FK Table prepared `DYE605.pineappl.lz4`, it is time to run a fit!
+For this we will use the NNPDF fitting framework.
+
+> **_NOTE:_** If you have never used the NNPDF fitting framework before please follow the [installation guide](https://docs.nnpdf.science/get-started/installation.html) and the [how to run a fit](https://docs.nnpdf.science/tutorials/run-fit.html) tutorial.
+
+In order to use our new FK Tables for DYE605, we are going to modify one of the [theories](https://docs.nnpdf.science/theory/theoryindex.html) already available within NNPDF.
+We are going to use Theory 400 which includes NNLO grids for all DIS observables and NLO grids (with k-factors for the NNLO contribution) for hadronic observables.
+
+```bash
+~$ vp-get theoryID 400
+...
+TheoryIDSpec(id=400, path=PosixPath('/path/to/prefix/share/NNPDF/data/theory_400'))
+````
+
+After downloading the theory, it will be uncompressed to a folder.
+Inside this folder we find the `theory_400/fastkernel` subfolder, which contains all FK tables available for the theory.
+Among them there is `DYE605.pineappl.lz4`.
+We can substitute it with the fktable that we just created... et voilà!
+
+If now we run an NNPDF fit with theory 400 the theory associated to DYE605 will be NNLO.
+Do not forget to remove the QCD c-factor from the [fitting runcard](https://github.com/NNPDF/nnpdf/blob/master/n3fit/runcards/reproduce_nnpdf40/NNPDF40_nnlo_as_01180_1000.yml) if it is not needed anymore!
+
+
+[^1]:
+    https://nnpdf.github.io/pineappl/
+[^2]:
+    https://docs.nnpdf.science
+[^3]:
+    Phys.Rev.D69:094008,2004 [hep-ph/0312266](https://arxiv.org/abs/hep-ph/0312266)
+[^4]:
+    https://eko.readthedocs.io/

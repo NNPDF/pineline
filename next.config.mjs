@@ -7,7 +7,8 @@ const withNextra = nextra({
   unstable_flexsearch: {
     codeblocks: true
   },
-  unstable_defaultShowCopyCode: true
+  unstable_defaultShowCopyCode: true,
+  latex: true
 })
 
 export default {
