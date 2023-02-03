@@ -7,7 +7,6 @@ const withNextra = nextra({
   unstable_flexsearch: {
     codeblocks: true
   },
-  unstable_defaultShowCopyCode: true,
   latex: true
 })
 
@@ -19,5 +18,7 @@ export default {
   env: {
     basePath: '/pineline'
   },
-  images: { unoptimized: true }
+  images: {
+    unoptimized: true
+  }
 }
