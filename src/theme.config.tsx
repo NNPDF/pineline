@@ -4,10 +4,22 @@ import { useRouter } from 'next/router'
 
 const logo = (
     <>
-        <span className="hidden mr-4 font-extrabold md:inline">Pineline</span>
-        <span className="hidden font-normal text-gray-600 md:inline">
+        <span style={{ fontWeight: 800, marginRight: "0.5rem" }}>Pineline</span>
+        <span style={{ fontWeight: 400, color: "rgb(75 85 99/var(--tw-text-opacity))" }}>
             Theory predictions for PDF fitting
         </span>
+        <style jsx>{`
+          span {
+            display: none;
+          }
+
+          @media (min-width: 768px) { 
+            span {
+              display: inline;
+            }
+          }
+        `}
+        </style>
     </>
 )
 
