@@ -12,8 +12,8 @@
   "tutorials": "Tutorials",
   "examples": "Examples",
   "dev": "Developers' Area",
-  "example-page": {
-    "title": "Page",
+  "about": {
+    "title": "About",
     "type": "page"
   },
   "example-menu": {
