@@ -3,11 +3,10 @@ import nextra from 'nextra'
 const withNextra = nextra({
   theme: 'nextra-theme-docs',
   themeConfig: './src/theme.config.tsx',
-  unstable_staticImage: true,
-  unstable_flexsearch: {
+  staticImage: true,
+  flexsearch: {
     codeblocks: true
   },
-  unstable_defaultShowCopyCode: true,
   latex: true
 })
 
@@ -19,5 +18,7 @@ export default {
   env: {
     basePath: '/pineline'
   },
-  images: { unoptimized: true }
+  images: {
+    unoptimized: true
+  }
 }
