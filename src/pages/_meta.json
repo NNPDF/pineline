@@ -2,7 +2,6 @@
   "index": {
     "title": "Pineline",
     "type": "page",
-    "hidden": true,
     "theme": {
       "layout": "raw"
     }
