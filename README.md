@@ -1,10 +1,12 @@
 <p align="center">
   <a href="https://n3pdf.github.io/pineline/">
     <img alt="Pineline"
-    src="./public/logo.png"
+    src="./public/pineline.svg"
     width=400>
   </a>
 </p>
+
+# Pineline - theory predictions for PDF fitting
 
 To install the required node dependencies, run:
 
