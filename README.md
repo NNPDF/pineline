@@ -6,7 +6,7 @@
   </a>
 </p>
 
-# Pineline - theory predictions for PDF fitting
+# Pineline - high-energy theory predictions
 
 To install the required node dependencies, run:
 
