@@ -2,7 +2,7 @@
   <a href="https://n3pdf.github.io/pineline/">
     <img alt="Pineline"
     src="./public/pineline.svg"
-    width=400>
+    height=350>
   </a>
 </p>
 
