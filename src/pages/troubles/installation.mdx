@@ -1,0 +1,15 @@
+# Installation issues
+
+##  Conflicting versions of Numba and Numpy
+
+This issue is caused by a too old `pip` version, see [#25](https://github.com/NNPDF/pineline/issues/25).
+E.g. this has been observed with pip v20, present in environments generated with
+virtualenv v20.
+
+##### Solution
+It is actually quite simple, described in this [comment](https://github.com/NNPDF/pineline/issues/25#issuecomment-1432808046).
+After the creation of the enviornment, and before installing the pineline,
+update the inner pip version with:
+```sh
+pip install -U pip
+```

@@ -11,7 +11,8 @@
   "installation": "Installation",
   "tutorials": "Tutorials",
   "examples": "Examples",
-  "dev": "Developers' Area",
+  "troubles": "Troubleshooting",
+  "dev": "Development",
   "about": {
     "title": "About",
     "type": "page"
