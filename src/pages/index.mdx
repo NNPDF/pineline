@@ -47,7 +47,7 @@ export function Comparison({ a, b, invert, ...props }) {
     </p>
   </div>
 
-  <div className="features-container">
+  <div className={styles['features-container']}>
     <div className={styles['content-container']}>
       <Features>
         <Feature large centered id="gombo" className={styles.gombo}>
@@ -57,17 +57,6 @@ export function Comparison({ a, b, invert, ...props }) {
       </Features>
     </div>
   </div>
-
-  <style jsx>{`
-    .features-container {
-      margin: 4rem 0;
-      padding: 4rem 0;
-      background-color: #f3f4f6;
-    }
-    :global(.dark) .features-container {
-      background-color: #000;
-    }
-  `}</style>
 
   <style jsx>{`
     :global(#gombo) {

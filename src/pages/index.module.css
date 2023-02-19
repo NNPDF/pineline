@@ -73,6 +73,13 @@
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+@media screen and (min-width: 768px) {
+  .links {
+    margin: 3rem 0;
+  }
 }
 
 .links > * {
@@ -83,6 +90,22 @@
   color: currentcolor !important;
   text-decoration: none !important;
   font-weight: 600;
+}
+
+.features-container {
+  margin: 0;
+  padding: 2rem 0;
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .features-container {
+  background-color: #000;
+}
+
+@media screen and (min-width: 768px) {
+  .features-container {
+    padding: 4rem 0;
+  }
 }
 
 .gombo {
