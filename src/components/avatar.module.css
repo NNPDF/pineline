@@ -1,0 +1,6 @@
+.pic {
+  display: inline-block;
+  border-radius: 50%;
+  width: 2.5rem;
+  padding: 0.25rem;
+}
