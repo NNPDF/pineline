@@ -95,8 +95,8 @@ export default {
         defaultMenuCollapseLevel: 1,
         titleComponent: ({ title }) => <>{title}</>
     },
-    footer: {
-        text: <>{new Date().getFullYear()} © N3PDF.</>
+  footer: {
+    text: <>{new Date().getFullYear()} © <span style={{width: '.3em'}}/><a href="https://n3pdf.mi.infn.it">N3PDF</a></>
     },
     useNextSeoProps() {
         const { asPath } = useRouter()
