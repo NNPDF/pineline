@@ -1,11 +1,12 @@
-import process from 'next/constants';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import styles from './avatar.module.css';
 
 
 export default function({ name }) {
-    const [url, setUrl] = useState(`${process.env.basePath}/avatar.svg`);
+    const router = useRouter();
+    const [url, setUrl] = useState(`${router.basePath}/avatar.svg`);
 
     useEffect(() => {
         (async () => {
