@@ -16,8 +16,8 @@
     "title": "About",
     "type": "page"
   },
-  "example-menu": {
-    "title": "Menu",
+  "getting-started": {
+    "title": "Getting Started",
     "type": "menu",
     "items": {
       "introduction": {
@@ -27,6 +27,34 @@
       "installation": {
         "title": "Install",
         "href": "/installation"
+      }
+    }
+  },
+  "guides": {
+    "title": "Guides",
+    "type": "menu",
+    "items": {
+      "setup": {
+        "title": "Set up",
+        "href": "/tutorials/setup"
+      },
+      "fktable": {
+        "title": "FK tables",
+        "href": "/tutorials/fktable"
+      }
+    }
+  },
+  "more": {
+    "title": "More",
+    "type": "menu",
+    "items": {
+      "troubles": {
+        "title": "Troubleshooting",
+        "href": "/troubles"
+      },
+      "dev": {
+        "title": "Development",
+        "href": "/dev"
       }
     }
   }
