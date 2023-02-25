@@ -1,4 +1,7 @@
 {
   "setup": "Set up",
-  "fktable": "FK tables"
+  "fktable": "FK tables",
+  "vrap": "Modify predictions for a dataset",
+  "modified-theory": "Modified theory parameters 🛠️",
+  "exotic": "Exotic Madgraph 🛠️"
 }
