@@ -15,6 +15,9 @@ export default {
     reactStrictMode: true
   }),
   basePath: '/pineline',
+  paths: {
+    "@components/*": ["components/*"]
+  },
   env: {
     basePath: '/pineline'
   },
