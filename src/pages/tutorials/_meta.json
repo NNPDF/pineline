@@ -1,6 +1,6 @@
 {
-  "setup": "Set up",
-  "fktable": "FK tables",
+  "setup-pineko": "Set up Pineko",
+  "fktable": "Compute FK tables",
   "vrap": "Modify predictions for a dataset",
   "modified-theory": "Modified theory parameters 🛠️",
   "exotic": "Exotic Madgraph 🛠️"

@@ -34,12 +34,12 @@
     "title": "Guides",
     "type": "menu",
     "items": {
-      "setup": {
-        "title": "Set up",
-        "href": "/tutorials/setup"
+      "setup-pineko": {
+        "title": "Set up Pineko",
+        "href": "/tutorials/setup-pineko"
       },
       "fktable": {
-        "title": "FK tables",
+        "title": "Compute FK tables",
         "href": "/tutorials/fktable"
       }
     }
