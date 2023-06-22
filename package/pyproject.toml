@@ -2,15 +2,15 @@
 name = "pineline"
 version = "0.0.0"
 description = "Theory predictions for PDF fitting"
-authors = ["Alessandro Candido <candido.ale@gmail.com>"]
+authors = ["Andrea Barontini <andrea.barontini@mi.infn.it>", "Alessandro Candido <alessandro.candido@mi.infn.it>", "Juan Cruz Martinez <juan.cruz.martinez@cern.ch>", "Felix Hekhorn <felix.hekhorn@mi.infn.it>", "Christopher Schwan <christopher.schwan@physik.uni-wuerzburg.de>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8,<3.11"
-eko = "^0.12.0"
-pineko = "^0.3.3"
-pineappl = "^0.5.9"
-pinefarm = { version = "^0.2.2", optional = true }
+python = "^3.8,<3.12"
+eko = "^0.13.5"
+pineko = "^0.4.1"
+pineappl = "^0.6.0"
+pinefarm = { version = "0.3.0", optional = true }
 
 [tool.poetry.extras]
 full = ["pinefarm"]
