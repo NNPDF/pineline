@@ -1,0 +1,54 @@
+#!/usr/bin/bash
+
+if [ -z "$1" ]; then
+  echo "An argument is required, to specify the root folder where to bootstrap."
+  exit
+fi
+
+root=$(realpath $1)
+
+# create environment and install deps
+environ=$root/env
+if [ ! -d $environ ]; then
+  virtualenv $environ
+  . $environ/bin/activate
+  pip install pineline[full]
+fi
+
+# copy frequently used scripts
+for script in scripts/*; do
+  if [ ! -f $root/$script ]; then
+    cp $script $root
+  fi
+done
+
+# install useful PDF sets
+mkdir -p $root/LHAPDF
+pushd $root/LHAPDF >/dev/null
+for nf in {3..5}; do
+  set="221012-01-rs-nnpdf40_baseline_repeat_nf${nf}"
+  if [ ! -d $set ]; then
+    archive="${set}.tar.gz"
+    url="https://data.nnpdf.science/pdfs/${archive}"
+    wget $url
+    tar xzf $archive
+    rm $archive
+  fi
+done
+popd >/dev/null
+
+# install & configure LHAPDF itself
+if !($environ/bin/pip list | rg "lhapdf " >/dev/null); then
+  base="https://raw.githubusercontent.com/NNPDF/workflows/v2/packages/lhapdf"
+  files=("install.sh" "variables.sh" "download.sh" "clean.sh")
+  for f in "${files[@]}"; do
+    wget $base/$f
+  done
+  export PREFIX=$environ
+  sh install.sh
+
+  sh clean.sh
+  for f in "${files[@]}"; do
+    rm $f
+  done
+fi
