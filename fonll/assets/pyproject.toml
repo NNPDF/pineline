@@ -1,0 +1,18 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "fonll"
+version = "0.1.0"
+description = ""
+authors = ["Alessandro Candido <candido.ale@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.scripts]
+numerical = "fonll.numerical:run"
+analytical = "fonll.analytical:run"
+coompare = "fonll.compare:compare"
