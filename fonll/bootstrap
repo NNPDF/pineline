@@ -17,6 +17,8 @@ if [ ! -d $environ ]; then
   virtualenv $environ
   . $environ/bin/activate
   pip install pineline[full]
+  # more development tools
+  pip install ipython pdbpp
   deactivate
 fi
 
@@ -40,18 +42,18 @@ for proj in "yadism" "pineko"; do
 done
 popd >/dev/null
 
-# copy/update scripts
-# -------------------
-echo "Copying scripts..."
+# copy/update assets
+# ------------------
+echo "Copying assets..."
 bootdir=$(dirname $(realpath $0))
-cp $bootdir/scripts/* $root
+cp $bootdir/assets/* $root
 sed -i "s@\$bootdir@$bootdir@" $root/activate
 sed -i "s@\$root@$root@" $root/activate
 
 # install & configure LHAPDF
 # --------------------------
 lhaimport=$($environ/bin/python -c "import lhapdf" 2>&1 >/dev/null)
-if  [[ $lhaimport == *"ModuleNotFoundError"* ]] then
+if [[ $lhaimport == *"ModuleNotFoundError"* ]]; then
   echo "Installing LHAPDF..."
 
   base="https://raw.githubusercontent.com/NNPDF/workflows/v2/packages/lhapdf"
@@ -87,7 +89,6 @@ for nf in {3..5}; do
   fi
 done
 popd >/dev/null
-
 
 # clean up
 # --------
