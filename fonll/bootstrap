@@ -11,11 +11,8 @@ mkdir -p $root/tmp
 
 # copy/update assets
 # ------------------
-echo "Copying assets..."
 bootdir=$(dirname $(realpath $0))
-cp -r $bootdir/assets/* $root
-sed -i "s@\$bootdir@$bootdir@" $root/activate
-sed -i "s@\$root@$root@" $root/activate
+$bootdir/assets/preupdate $bootdir $root
 
 # create environment and install deps
 # -----------------------------------

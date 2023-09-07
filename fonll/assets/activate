@@ -1,8 +1,11 @@
-. $root/env/bin/activate
+. #root/env/bin/activate
 
+export FONLL_WORKSPACE=#root
 export pre_fonll_lhapdf_data_path=$LHAPDF_DATA_PATH
-export LHAPDF_DATA_PATH=$root/LHAPDF
+export LHAPDF_DATA_PATH=#root/LHAPDF
 export pre_fonll_path=$PATH
-export PATH=$root:$bootdir:$PATH
+export PATH=#root:#bootdir:$PATH
 
-alias deact='. $root/deact' 
+alias deact='. $root/deact'
+
+# vim: set ft=sh:

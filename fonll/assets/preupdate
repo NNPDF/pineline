@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+bootdir=#bootdir
+root=#root
+
+if [ ! -z "$1" ]; then
+  bootdir=$(realpath $1)
+fi
+if [ ! -z "$2" ]; then
+  root=$(realpath $2)
+fi
+
+echo "Copying assets..."
+cp -r $bootdir/assets/* $root
+sed -i "s@\#""bootdir@$bootdir@" $root/{activate,preupdate}
+sed -i "s@\#""root@$root@" $root/{activate,preupdate}
+mv $root/preupdate $root/update

@@ -2,9 +2,12 @@ root=$PWD
 
 unalias deact
 
+unset FONLL_WORKSPACE
 export LHAPDF_DATA_PATH=$pre_fonll_lhapdf_data_path
 unset pre_fonll_lhapdf_data_path
 export PATH=$pre_fonll_path
 unset pre_fonll_path
 
 deactivate
+
+# vim: set ft=sh:
