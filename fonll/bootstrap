@@ -9,6 +9,14 @@ root=$(realpath $1)
 # temp dir, to download file and similar
 mkdir -p $root/tmp
 
+# copy/update assets
+# ------------------
+echo "Copying assets..."
+bootdir=$(dirname $(realpath $0))
+cp -r $bootdir/assets/* $root
+sed -i "s@\$bootdir@$bootdir@" $root/activate
+sed -i "s@\$root@$root@" $root/activate
+
 # create environment and install deps
 # -----------------------------------
 environ=$root/env
@@ -24,7 +32,7 @@ fi
 
 # replace some dependencies with repos
 pushd $root >/dev/null
-for proj in "yadism" "pineko"; do
+for proj in "yadism" "pineko" "pinecards"; do
   if [ ! -d $proj ]; then
     git clone https://github.com/NNPDF/$proj
   fi
@@ -32,23 +40,25 @@ for proj in "yadism" "pineko"; do
   echo "Pulling $proj..."
   git pull >/dev/null
   # only install in development once
-  . $environ/bin/activate
-  path=$(python -c "import $proj; print($proj.__file__)")
-  if [[ $path != $root/$proj* ]]; then
-    pip install -e .
+  if [ -f ./pyproject.toml ]; then
+    . $environ/bin/activate
+    path=$(python -c "import $proj; print($proj.__file__)")
+    if [[ $path != $root/$proj* ]]; then
+      pip install -e .
+    fi
+    deactivate
   fi
-  deactivate
   popd >/dev/null
 done
 popd >/dev/null
 
-# copy/update assets
-# ------------------
-echo "Copying assets..."
-bootdir=$(dirname $(realpath $0))
-cp $bootdir/assets/* $root
-sed -i "s@\$bootdir@$bootdir@" $root/activate
-sed -i "s@\$root@$root@" $root/activate
+# install the project itself
+. $environ/bin/activate
+fonllimport=$(python -c "import fonll" 2>&1 >/dev/null)
+if [[ $fonllimport == *"ModuleNotFoundError"* ]]; then
+  pip install -e $root
+fi
+deactivate
 
 # install & configure LHAPDF
 # --------------------------
