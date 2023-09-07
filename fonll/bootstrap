@@ -6,41 +6,58 @@ if [ -z "$1" ]; then
 fi
 
 root=$(realpath $1)
+# temp dir, to download file and similar
+mkdir -p $root/tmp
 
 # create environment and install deps
+# -----------------------------------
 environ=$root/env
 if [ ! -d $environ ]; then
+  echo "Creating environment..."
   virtualenv $environ
   . $environ/bin/activate
   pip install pineline[full]
+  deactivate
 fi
 
-# copy frequently used scripts
-for script in scripts/*; do
-  if [ ! -f $root/$script ]; then
-    cp $script $root
+# replace some dependencies with repos
+pushd $root >/dev/null
+for proj in "yadism" "pineko"; do
+  if [ ! -d $proj ]; then
+    git clone https://github.com/NNPDF/$proj
   fi
-done
-
-# install useful PDF sets
-mkdir -p $root/LHAPDF
-pushd $root/LHAPDF >/dev/null
-for nf in {3..5}; do
-  set="221012-01-rs-nnpdf40_baseline_repeat_nf${nf}"
-  if [ ! -d $set ]; then
-    archive="${set}.tar.gz"
-    url="https://data.nnpdf.science/pdfs/${archive}"
-    wget $url
-    tar xzf $archive
-    rm $archive
+  pushd $root/$proj >/dev/null
+  echo "Pulling $proj..."
+  git pull >/dev/null
+  # only install in development once
+  . $environ/bin/activate
+  path=$(python -c "import $proj; print($proj.__file__)")
+  if [[ $path != $root/$proj* ]]; then
+    pip install -e .
   fi
+  deactivate
+  popd >/dev/null
 done
 popd >/dev/null
 
-# install & configure LHAPDF itself
-if !($environ/bin/pip list | rg "lhapdf " >/dev/null); then
+# copy/update scripts
+# -------------------
+echo "Copying scripts..."
+bootdir=$(dirname $(realpath $0))
+cp $bootdir/scripts/* $root
+sed -i "s@\$bootdir@$bootdir@" $root/activate
+sed -i "s@\$root@$root@" $root/activate
+
+# install & configure LHAPDF
+# --------------------------
+lhaimport=$($environ/bin/python -c "import lhapdf" 2>&1 >/dev/null)
+if  [[ $lhaimport == *"ModuleNotFoundError"* ]] then
+  echo "Installing LHAPDF..."
+
   base="https://raw.githubusercontent.com/NNPDF/workflows/v2/packages/lhapdf"
   files=("install.sh" "variables.sh" "download.sh" "clean.sh")
+
+  pushd $root/tmp
   for f in "${files[@]}"; do
     wget $base/$f
   done
@@ -51,4 +68,28 @@ if !($environ/bin/pip list | rg "lhapdf " >/dev/null); then
   for f in "${files[@]}"; do
     rm $f
   done
+  popd
 fi
+
+# install useful PDF sets
+# -----------------------
+mkdir -p $root/LHAPDF
+pushd $root/LHAPDF >/dev/null
+for nf in {3..5}; do
+  set="221012-01-rs-nnpdf40_baseline_repeat_nf${nf}"
+  if [ ! -d $set ]; then
+    echo "Installing PDF set $set..."
+    archive="${set}.tar.gz"
+    url="https://data.nnpdf.science/pdfs/${archive}"
+    wget $url
+    tar xzf $archive
+    rm $archive
+  fi
+done
+popd >/dev/null
+
+
+# clean up
+# --------
+rm -rf $root/tmp
+echo "Done!"

@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+
+root=$(realpath $(dirname $0))
+
+if [[ ${1,,} == "a"* ]]; then
+  cd $root/yadism
+  git switch master
+  cd $root/pineko
+  git switch main
+  # pip install \
+    # git+https://github.com/NNPDF/yadism \
+    # git+https://github.com/NNPDF/pineko
+elif [[ ${1,,} == "n"* ]]; then
+  cd $root/yadism
+  git switch numerical_fonll
+  cd $root/pineko
+  git switch num_fonll
+  # pip install \
+    # git+https://github.com/NNPDF/yadism@numerical_fonll \
+    # git+https://github.com/NNPDF/pineko@num_fonll
+else
+  cat << EOL
+Supported options are
+  - [n]umerical
+  - [a]nalitycal
+
+(only the first letter is actually matched)
+EOL
+fi
