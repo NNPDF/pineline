@@ -16,7 +16,42 @@ Since the configuration itself is non-trivial, a few scripts are provided to
 speed up the setup of an environment suitable for these studies.
 
 - `bootstrap`: create a whole workspace
-    - creates a virtualenv
-    - downloads relevant PDF sets
-    - installs LHAPDF
+  - creates a virtualenv
+  - downloads relevant PDF sets
+  - installs LHAPDF
+  - copies all the relevant scripts
+  - usage:
+- `activate`: activate the environment and export convenient variables
+- `deact`: deactivate the environment and reset the variables
+- `switch`: switch between numerical and analytical FONLL
+- `update`: update the copy of the scripts
 
+### Usage
+
+Once run the `bootstrap` as described above, enter the environment sourcing the
+copy of the `activate` script in the workspace:
+
+```sh
+# inside `workspace`
+. ./activate
+```
+
+After that, the workspace itself gets added to the `$PATH`, and convenient
+aliases are exported, so you could use all of the following:
+```sh
+# switch to numerical FONLL
+switch n
+# switch to analytical FONLL
+switch a
+
+# deactivate the environment
+deact
+
+# update the environment with bootstrap
+bootstrap /path/to/workspace
+# or (within the workspace)
+bootstrap .
+
+# just fetch a new copy of the scripts
+update
+```
