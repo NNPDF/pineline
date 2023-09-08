@@ -4,7 +4,9 @@ import click
 import lhapdf
 import yadism
 
-from .commons import load, patch, dump, DATASET, PDF
+from .commons import dump, load, patch, DATASET, PDF
+
+RESULTS = "analytical"
 
 
 def _patch(theory, observables):
@@ -42,7 +44,4 @@ def run(root: Path):
 
     """
     t, o = _patch(*load(DATASET, root))
-
-    results = root / "results" / "analytical"
-    results.mkdir(exist_ok=True, parents=True)
-    dump(compute(t, o, PDF[4]), results)
+    dump(compute(t, o, PDF[4]), root, RESULTS)

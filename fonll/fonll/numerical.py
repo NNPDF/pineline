@@ -5,11 +5,12 @@ import click
 import lhapdf
 import yadism
 
-from .commons import load, patch, dump, DATASET, PDF
+from .commons import dump, load, patch, DATASET, PDF
 
 include_nf5 = True
 
 FLAVORS = [3, 3, 4, 4, 5]
+RESULTS = "numerical"
 
 
 def _patch(theory, observables):
@@ -56,7 +57,4 @@ def run(root: Path):
 
     """
     t, o = _patch(*load(DATASET, root))
-
-    results = root / "results" / "numerical"
-    results.mkdir(exist_ok=True, parents=True)
-    dump(compute(t, o), results)
+    dump(compute(t, o), root, RESULTS)

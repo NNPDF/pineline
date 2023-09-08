@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import numpy as np
 import yaml
@@ -51,5 +52,11 @@ def patch(theory, observables):
     return theory, observables
 
 
-def dump(out, results):
-    (results / f"{DATASET}.json").write_text(json.dumps(out))
+def dataset(root: Path, subdir: str):
+    res = root / "results" / subdir
+    res.mkdir(exist_ok=True, parents=True)
+    return res / f"{DATASET}.json"
+
+
+def dump(out, root, subdir):
+    (dataset(root, subdir)).write_text(json.dumps(out))
