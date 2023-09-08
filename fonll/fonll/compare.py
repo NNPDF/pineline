@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-from typing import Any
 from dataclasses import dataclass
 
 import click
@@ -86,7 +85,7 @@ class Data:
 # ++++++++++++++++ 1d sf plot +++++++++++++++++++++++++++++++++++++++++
 def sf_plot(d: Data, dest: Path):
     plt.figure()
-    single_x = np.where(d.x == d.uniqx[-1])[0]
+    #  single_x = np.where(d.x == d.uniqx[-1])[0]
     # single_x=np.array([i for i in range(len(x))])
     # plt.plot(q2[single_x],d.num[:,0][single_x],"o",color="C2", label="FFNS3",alpha=0.5)
     # plt.plot(q2[single_x],d.num[:,1][single_x],"v",color="C3", label="FFN03",alpha=0.5)
@@ -114,9 +113,8 @@ def sf_plot(d: Data, dest: Path):
     # plt.title(f"Q2={q2[0]} GeV2")
     # plt.xlabel(r"$x$")
     plt.legend()
-    #  plt.savefig("test2.png")
-    #  plt.savefig("test2.pdf")
-    plt.show()
+    plt.savefig(dest / "sf.png")
+    plt.savefig(dest / "sf.pdf")
 
 
 # ++++++++++++++++ heatmap with values +++++++++++++++++++++++++++++++++++++++++
@@ -134,85 +132,73 @@ def heatmap(ratio, dest: Path):
     plt.xlabel(r"$x$")
     plt.ylabel(r"$Q^2$")
     plt.title(r"$F_{2}$")
-    #  plt.savefig("test.pdf")
-    #  plt.savefig("test.png")
-    plt.show()
+    plt.savefig(dest / "heatmap.pdf")
+    plt.savefig(dest / "heatmap.png")
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-def other_plot(d: Data, dest: Path):
+def four_plot(d: Data, dest: Path):
     fig = plt.figure(figsize=(13, 10))
+
+    def colormesh(ax, value, **kwargs):
+        return ax.pcolormesh(
+            d.uniqx,
+            d.uniqq2,
+            value.reshape(d.shape).T[:-1, :-1],
+            shading="auto",
+            **kwargs
+        )
+
+    def aspect(ax, title):
+        ax.set_ylabel(r"$Q^2$")
+        ax.set_xlabel(r"$x$")
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_title(title)
 
     ax0 = fig.add_subplot(2, 2, 3)
     ax1 = fig.add_subplot(2, 2, 2)
     ax2 = fig.add_subplot(2, 2, 1)
     ax3 = fig.add_subplot(2, 2, 4)
-    X, Y = np.meshgrid(d.uniqx, d.uniqq2)
 
-    im0 = ax0.pcolormesh(
-        X,
-        Y,
-        (d.numres / d.anares).reshape(d.shape).T,
-        shading="auto",
-        cmap=plt.colormaps["bwr"],
+    im0 = colormesh(
+        ax0,
+        d.numres / d.anares,
+        cmap=plt.colormaps["RdBu_r"],
         norm=colors.CenteredNorm(vcenter=1.0, halfrange=0.25),
     )
-    ax0.set_ylabel(r"$Q^2$")
-    ax0.set_xlabel(r"$x$")
-    ax0.set_xscale("log")
-    ax0.set_yscale("log")
-    ax0.set_title("numerical fonll / analytical fonll")
+    aspect(ax0, "numerical fonll / analytical fonll")
 
-    im1 = ax1.pcolormesh(
-        X,
-        Y,
-        np.log(d.anares.reshape(d.shape)).T,
-        shading="auto",
+    im1 = colormesh(
+        ax1,
+        np.log(d.anares),
+        cmap=plt.colormaps["BrBG"],
+        norm=colors.SymLogNorm(linthresh=1e-1),
     )
-    ax1.set_ylabel(r"$Q^2$")
-    ax1.set_xlabel(r"$x$")
-    ax1.set_xscale("log")
-    ax1.set_yscale("log")
-    ax1.set_title("analytical fonll structure function")
+    aspect(ax1, "analytical fonll structure function")
 
-    im2 = ax2.pcolormesh(
-        X,
-        Y,
-        np.log(d.numres.reshape(d.shape)).T,
-        shading="auto",
+    im2 = colormesh(ax2, np.log(d.numres))
+    aspect(ax2, "numerical fonll structure function")
+
+    im3 = colormesh(
+        ax3,
+        d.anares - d.numres,
+        cmap=plt.colormaps["PuOr"],
+        norm=colors.CenteredNorm(vcenter=0.0, halfrange=0.05),
     )
-    ax2.set_ylabel(r"$Q^2$")
-    ax2.set_xlabel(r"$x$")
-    ax2.set_xscale("log")
-    ax2.set_yscale("log")
-    ax2.set_title("numerical fonll structure function")
+    aspect(ax3, "analytical fonll - numerical fonll")
 
-    im3 = ax3.pcolormesh(
-        X,
-        Y,
-        ((d.anares - d.numres).reshape(d.shape)).T,
-        shading="auto",
-        cmap="plasma",
-    )
-    ax3.set_ylabel(r"$Q^2$")
-    ax3.set_xlabel(r"$x$")
-    ax3.set_xscale("log")
-    ax3.set_yscale("log")
-    ax3.set_title("analytical fonll - numerical fonll")
-
-    cb0 = fig.colorbar(im0, ax=ax0, extend="both")
+    _ = fig.colorbar(im0, ax=ax0, extend="both")
     cb1 = fig.colorbar(im1, ax=ax1)
     cb2 = fig.colorbar(im2, ax=ax2)
-    cb3 = fig.colorbar(im3, ax=ax3)
-    cb2.mappable.set_clim(*cb1.mappable.get_clim())
+    _ = fig.colorbar(im3, ax=ax3)
 
     fig.tight_layout()
 
-    #  fig.savefig("test1.pdf")
-    #  fig.savefig("test1.png")
-    plt.show()
+    fig.savefig(dest / "four.pdf")
+    fig.savefig(dest / "four.png")
 
 
 @click.command()
@@ -229,6 +215,8 @@ def compare(root: Path):
     """
     data = load(dataset(root, ARES), dataset(root, NRES))
     print(tabulate(data.table))
+
+    (root / OUT).mkdir(exist_ok=True, parents=True)
     #  sf_plot(data, root / OUT)
     #  heatmap(data.ratio, root / OUT)
-    other_plot(data, root / OUT)
+    four_plot(data, root / OUT)
