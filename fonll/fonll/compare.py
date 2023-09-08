@@ -217,6 +217,6 @@ def compare(root: Path):
     print(tabulate(data.table))
 
     (root / OUT).mkdir(exist_ok=True, parents=True)
-    #  sf_plot(data, root / OUT)
-    #  heatmap(data.ratio, root / OUT)
+    sf_plot(data, root / OUT)
+    heatmap(data.ratio, root / OUT)
     four_plot(data, root / OUT)
