@@ -1,12 +1,17 @@
 import json
 
-import lhapdf
-import yadism
+import numpy as np
 import yaml
 
 THEORIES = "theories"
 PINECARDS = "pinecards"
 DATASET = "HERA_NC_318GEV_EAVG_SIGMARED_CHARM"
+
+PDF = {
+    3: "221012-01-rs-nnpdf40_baseline_repeat_nf3",
+    4: "221012-01-rs-nnpdf40_baseline_repeat_nf4",
+    5: "221012-01-rs-nnpdf40_baseline_repeat_nf5",
+}
 
 
 def load(dataset, root):
@@ -18,17 +23,32 @@ def load(dataset, root):
     return theory, observables
 
 
-def compute(theory, observables, pdfname):
-    pdf = lhapdf.mkPDF(pdfname)
-    values = yadism.run_yadism(theory, observables)
-    values = values.apply_pdf(pdf)
+def patch(theory, observables):
+    #  mb2 = theory["mb"] ** 2
+    #  mc2 = theory["mc"] ** 2
 
-    out = []
-    for obs, kinresults in values.items():
-        for i, kinpoint in enumerate(kinresults):
-            out.append([values[obs][i][f] for f in ("result", "x", "Q2")])
+    del observables["observables"]["XSHERANCAVG_charm"]
+    observables["observables"]["F2_charm"] = []
+    # for qq in np.geomspace(mc2,16*mb2,10):
+    qq = 5.0
+    for xx in np.geomspace(5e-7, 1, 10):
+        observables["observables"]["F2_charm"].append({"Q2": qq, "x": xx})
 
-    return out
+    # These are needed but for some reason not present in the theory
+    hfl = "cbt"
+    for fl in hfl:
+        theory[f"kDIS{fl}Thr"] = 1.0
+
+    # theory["TMC"] = 0
+    # observables["prDIS"] = "NC"
+    # observables["IC"] = 0
+
+    # theory["FONLLParts"] = "full"
+    # theory["FNS"] = "FONLL-A"
+    # theory["NfFF"] = 3
+    # theory["PTO"] = 1
+
+    return theory, observables
 
 
 def dump(out, results):

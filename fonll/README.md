@@ -25,6 +25,8 @@ speed up the setup of an environment suitable for these studies.
 - `deact`: deactivate the environment and reset the variables
 - `switch`: switch between numerical and analytical FONLL
 - `update`: update the copy of the scripts
+- `numerical`/`analytical`: run the two FONLL calculations
+- `compare`: generate suitable plots
 
 ### Usage
 
@@ -51,6 +53,12 @@ deact
 bootstrap /path/to/workspace
 # or (within the workspace)
 bootstrap .
+
+# run numerical FONLL
+numerical /path/to/workspace
+# or (within the workspace)
+numerical
+# same for `analytical`
 
 # just fetch a new copy of the scripts
 update

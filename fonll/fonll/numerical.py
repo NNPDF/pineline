@@ -1,99 +1,62 @@
-import yadism
-import yaml
-import lhapdf
-import json
 import copy
 from pathlib import Path
-import numpy as np
-import time
-from eko import interpolation
+
+import click
+import lhapdf
+import yadism
+
+from .commons import load, patch, dump, DATASET, PDF
 
 include_nf5 = True
-path_pinecards = "/home/roy/github/NNPDF/pinecards/"
-dataset_name = "HERA_NC_318GEV_EAVG_SIGMARED_CHARM"
-path_theorycard = "/home/roy/github/NNPDF/theories/data/theory_cards/400.yaml"
 
-resultfolder = Path("./new_results")
-resultfolder.mkdir(exist_ok=True)
-
-pdf_nf3 = "221012-01-rs-nnpdf40_baseline_repeat_nf3"
-pdf_nf4 = "221012-01-rs-nnpdf40_baseline_repeat_nf4"
-pdf_nf5 = "221012-01-rs-nnpdf40_baseline_repeat_nf5"
-
-with open(path_pinecards + dataset_name + "/observable.yaml", "r") as f:
-    observablecard = yaml.safe_load(f)
-
-with open(path_theorycard, "r") as f:
-    theorycard = yaml.safe_load(f)
-
-mb2 = theorycard["mb"] ** 2
-mc2 = theorycard["mc"] ** 2
+FLAVORS = [3, 3, 4, 4, 5]
 
 
-del observablecard["observables"]["XSHERANCAVG_charm"]
-observablecard["observables"]["F2_charm"] = []
-# for qq in np.geomspace(mc2,16*mb2,10):
-qq=5.0
-for xx in np.geomspace(5e-7, 1, 10):
-    observablecard["observables"]["F2_charm"].append(
-        {"Q2": qq, "x": xx}
-    )
+def _patch(theory, observables):
+    theory, observables = patch(theory, observables)
+    theory["FONLLParts"] = "full"
 
-# theorycard["TMC"] = 0
-# observablecard["prDIS"] = "NC"
-# theorycard["PTO"] = 2
-# theorycard["IC"] = 1
-theorycard["FONLLParts"] = "full"
-
-# These are needed but for some reason not present in the theorycard
-hfl = "cbt"
-for fl in hfl:
-    theorycard[f"kDIS{fl}Thr"] = 1.0
-
-theorycards = [copy.deepcopy(theorycard) for _ in range(5)]
-theorycards[0]["FNS"] = "FONLL-FFNS"
-theorycards[0]["NfFF"] = 3
-theorycards[1]["FNS"] = "FONLL-FFN0"
-theorycards[1]["NfFF"] = 3
-theorycards[2]["FNS"] = "FONLL-FFNS"
-theorycards[2]["NfFF"] = 4
-theorycards[3]["FNS"] = "FONLL-FFN0"
-theorycards[3]["NfFF"] = 4
-theorycards[4]["FNS"] = "FONLL-FFNS"
-theorycards[4]["NfFF"] = 5
-
-pdfnames = [pdf_nf3, pdf_nf3, pdf_nf4, pdf_nf4, pdf_nf5]
-
-values = []
-for enum, (pdfname, tc) in enumerate(zip(pdfnames, theorycards)):
-    if include_nf5 or enum < 3:
-        pdf = lhapdf.mkPDF(pdfname)
-        out = yadism.run_yadism(tc, observablecard)
-        values.append(out.apply_pdf(pdf))
-end = time.time()
+    theories = []
+    for scheme, nf in [("FFNS", 3), ("FFN0", 3), ("FFNS", 4), ("FFN0", 4), ("FFNS", 5)]:
+        th = copy.deepcopy(theory)
+        th["FNS"], th["NfFF"] = f"FONLL-{scheme}", nf
+        theories.append(th)
+    return theories, observables
 
 
-fonll_out = []
-for observable_name, kinresults in values[0].items():
-    for i, _kinpoint in enumerate(kinresults):
-        if include_nf5:
-            fonll_out.append(
-                [
-                    values[0][observable_name][i]["result"],
-                    values[1][observable_name][i]["result"],
-                    values[2][observable_name][i]["result"],
-                    values[3][observable_name][i]["result"],
-                    values[4][observable_name][i]["result"],
-                ]
-            )
-        else:
-            fonll_out.append(
-                [
-                    values[0][observable_name][i]["result"],
-                    values[1][observable_name][i]["result"],
-                    values[2][observable_name][i]["result"],
-                ]
+def compute(theories, observables):
+    values = []
+    for i, (nf, tc) in enumerate(zip(FLAVORS, theories)):
+        pdfname = PDF[nf]
+        if include_nf5 or i < 3:
+            pdf = lhapdf.mkPDF(pdfname)
+            out = yadism.run_yadism(tc, observables)
+            values.append(out.apply_pdf(pdf))
+
+    out = []
+    for obs, kinresults in values[0].items():
+        for i, _kinpoint in enumerate(kinresults):
+            out.append(
+                [values[j][obs][i]["result"] for j in range(5 if include_nf5 else 3)]
             )
 
-with open(f"{str(resultfolder)}/{dataset_name}.json", "w") as f:
-    json.dump(fonll_out, f)
+    return out
+
+
+@click.command()
+@click.argument(
+    "root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=Path.cwd(),
+)
+def run(root: Path):
+    """Compute numerical FONLL results.
+
+    ROOT is the path to your workspace.
+
+    """
+    t, o = _patch(*load(DATASET, root))
+
+    results = root / "results" / "numerical"
+    results.mkdir(exist_ok=True, parents=True)
+    dump(compute(t, o), results)
