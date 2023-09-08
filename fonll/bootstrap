@@ -21,9 +21,8 @@ if [ ! -d $environ ]; then
   echo "Creating environment..."
   virtualenv $environ
   . $environ/bin/activate
-  pip install pineline[full]
-  # more development tools
-  pip install ipython pdbpp
+  pip install pineline[full] \
+    ipython pdbpp # and more development tools
   deactivate
 fi
 
@@ -51,10 +50,12 @@ popd >/dev/null
 
 # install the project itself
 . $environ/bin/activate
+pushd $root >/dev/null
 fonllimport=$(python -c "import fonll" 2>&1 >/dev/null)
 if [[ $fonllimport == *"ModuleNotFoundError"* ]]; then
-  pip install -e $root
+  pip install -e $bootdir
 fi
+popd >/dev/null
 deactivate
 
 # install & configure LHAPDF

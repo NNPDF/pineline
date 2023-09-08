@@ -6,6 +6,6 @@ export LHAPDF_DATA_PATH=#root/LHAPDF
 export pre_fonll_path=$PATH
 export PATH=#root:#bootdir:$PATH
 
-alias deact='. $root/deact'
+alias deact='. #root/deact'
 
 # vim: set ft=sh:
