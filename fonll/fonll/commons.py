@@ -31,10 +31,10 @@ def patch(theory, observables):
     del observables["observables"]["XSHERANCAVG_charm"]
     observables["observables"]["F2_charm"] = []
     #  for qq in np.geomspace(mc2, 16 * mb2, 10):
-    for qq in np.linspace(1, 10, 10):
+    for qq in np.arange(3.0, 15.0):
         #  qq = 5.0
         #  for xx in np.geomspace(5e-7, 1, 10):
-        for xx in np.linspace(1e-1, 1, 10):
+        for xx in np.arange(0.02, 0.8, 0.03):
             observables["observables"]["F2_charm"].append({"Q2": qq, "x": xx})
 
     # These are needed but for some reason not present in the theory

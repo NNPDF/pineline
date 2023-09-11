@@ -52,7 +52,7 @@ class Data:
 
     @property
     def shape(self):
-        return len(self.uniqx), len(self.uniqq2)
+        return len(self.uniqq2), len(self.uniqx)
 
     @property
     def anares(self):
@@ -73,7 +73,7 @@ class Data:
 
     @property
     def ratio(self):
-        ratio = (np.float64(self.numres) / self.anares).reshape(self.shape).T
+        ratio = (np.float64(self.numres) / self.anares).reshape(self.shape)
         ratio = np.flip(ratio, axis=0)
         return pd.DataFrame(
             ratio,
@@ -127,7 +127,7 @@ def heatmap(ratio, dest: Path):
         cmap=plt.colormaps["RdBu_r"],
         norm=colors.CenteredNorm(vcenter=0.0, halfrange=50),
         fmt=".3g",
-        cbar_kws={"label": "nFONLL / aFONLL"},
+        cbar_kws={"label": "(nFONLL - aFONLL) / aFONLL %"},
     )
     plt.xlabel(r"$x$")
     plt.ylabel(r"$Q^2$")
@@ -146,7 +146,7 @@ def four_plot(d: Data, dest: Path):
         return ax.pcolormesh(
             d.uniqx,
             d.uniqq2,
-            value.reshape(d.shape).T[:-1, :-1],
+            value.reshape(d.shape)[:-1, :-1],
             shading="auto",
             **kwargs
         )
@@ -199,6 +199,7 @@ def four_plot(d: Data, dest: Path):
     cb1 = fig.colorbar(im1, ax=ax1)
     cb2 = fig.colorbar(im2, ax=ax2)
     _ = fig.colorbar(im3, ax=ax3)
+    cb2.mappable.set_clim(*cb1.mappable.get_clim())
 
     fig.tight_layout()
 
