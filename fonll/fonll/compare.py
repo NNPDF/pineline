@@ -106,7 +106,7 @@ def sf_plot(d: Data, dest: Path):
     plt.plot(d.x, d.numres, "P", color="C1", label="nFONLL", alpha=0.5)
     # plt.axvline(x = 5/(5+4*4.92**2), label = r'$\frac{Q^2}{Q^2+4m_b}$', color='black')
 
-    plt.xscale("log")
+    #  plt.xscale("log")
     # plt.yscale("log")
     plt.yscale("symlog", linthresh=1e-10)
     # plt.title(f"x={x[single_x][0]}")
@@ -121,12 +121,12 @@ def sf_plot(d: Data, dest: Path):
 def heatmap(ratio, dest: Path):
     plt.figure(figsize=(2 * 10, 2 * 6))
     sns.heatmap(
-        ratio,
+        (ratio - 1) * 100,
         annot=True,
         shading="auto",
-        cmap=plt.colormaps["bwr"],
-        norm=colors.CenteredNorm(vcenter=1.0, halfrange=0.5),
-        fmt=".3f",
+        cmap=plt.colormaps["RdBu_r"],
+        norm=colors.CenteredNorm(vcenter=0.0, halfrange=50),
+        fmt=".3g",
         cbar_kws={"label": "nFONLL / aFONLL"},
     )
     plt.xlabel(r"$x$")
@@ -154,8 +154,8 @@ def four_plot(d: Data, dest: Path):
     def aspect(ax, title):
         ax.set_ylabel(r"$Q^2$")
         ax.set_xlabel(r"$x$")
-        ax.set_xscale("log")
-        ax.set_yscale("log")
+        #  ax.set_xscale("log")
+        #  ax.set_yscale("log")
         ax.set_title(title)
 
     ax0 = fig.add_subplot(2, 2, 3)
@@ -173,20 +173,25 @@ def four_plot(d: Data, dest: Path):
 
     im1 = colormesh(
         ax1,
-        np.log(d.anares),
-        cmap=plt.colormaps["BrBG"],
-        norm=colors.SymLogNorm(linthresh=1e-1),
+        np.log10(d.anares),
+        cmap=plt.colormaps["magma"],
     )
     aspect(ax1, "analytical fonll structure function")
 
-    im2 = colormesh(ax2, np.log(d.numres))
+    im2 = colormesh(
+        ax2,
+        np.log10(d.numres),
+        cmap=plt.colormaps["magma"],
+    )
     aspect(ax2, "numerical fonll structure function")
 
     im3 = colormesh(
         ax3,
         d.anares - d.numres,
         cmap=plt.colormaps["PuOr"],
-        norm=colors.CenteredNorm(vcenter=0.0, halfrange=0.05),
+        norm=colors.CenteredNorm(
+            vcenter=0.0, halfrange=3 * np.std(d.anares - d.numres)
+        ),
     )
     aspect(ax3, "analytical fonll - numerical fonll")
 
