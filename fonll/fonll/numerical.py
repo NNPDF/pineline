@@ -7,8 +7,7 @@ import yadism
 
 from .commons import dump, load, patch, DATASET, PDF
 
-include_nf5 = True
-
+include_nf5 = False
 FLAVORS = [3, 3, 4, 4, 5]
 RESULTS = "numerical"
 
@@ -18,9 +17,17 @@ def _patch(theory, observables):
     theory["FONLLParts"] = "full"
 
     theories = []
-    for scheme, nf in [("FFNS", 3), ("FFN0", 3), ("FFNS", 4), ("FFN0", 4), ("FFNS", 5)]:
+    for scheme, nf in [
+        ("FFNS", 3),
+        ("FFN0", 3),
+        ("FFNS", 4),
+        ("FFN0", 4),
+        ("FFNS", 5)
+    ]:
         th = copy.deepcopy(theory)
         th["FNS"], th["NfFF"] = f"FONLL-{scheme}", nf
+        th["IC"] = 0
+        th["TMC"] = 0 
         theories.append(th)
     return theories, observables
 
@@ -38,7 +45,7 @@ def compute(theories, observables):
     for obs, kinresults in values[0].items():
         for i, _kinpoint in enumerate(kinresults):
             out.append(
-                [values[j][obs][i]["result"] for j in range(5 if include_nf5 else 3)]
+                [values[j][obs][i]["result"] for j in range(len(FLAVORS) if include_nf5 else 3)]
             )
 
     return out
