@@ -21,6 +21,7 @@ else
   cat <<EOL
 Supported options are
   - [n]umerical
+  - [f]ixed (patched) numerical
   - [a]nalitycal
 
 (only the first letter is actually matched)

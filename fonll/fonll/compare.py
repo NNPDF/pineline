@@ -163,11 +163,15 @@ def four_plot(d: Data, dest: Path):
     ax2 = fig.add_subplot(2, 2, 1)
     ax3 = fig.add_subplot(2, 2, 4)
 
+    rat = d.numres / d.anares
     im0 = colormesh(
         ax0,
-        d.numres / d.anares,
+        rat,
         cmap=plt.colormaps["RdBu_r"],
-        norm=colors.CenteredNorm(vcenter=1.0, halfrange=0.25),
+        norm=colors.CenteredNorm(
+            vcenter=1.0,
+            halfrange=np.mean(rat) - np.quantile(rat, 1e-2),
+        ),
     )
     aspect(ax0, "numerical fonll / analytical fonll")
 
