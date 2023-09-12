@@ -4,22 +4,21 @@ root=$(realpath $(dirname $0))
 
 if [[ ${1,,} == "a"* ]]; then
   cd $root/yadism
-  git checkout  master
+  git checkout master
   cd $root/pineko
-  git checkout  main
-  # pip install \
-    # git+https://github.com/NNPDF/yadism \
-    # git+https://github.com/NNPDF/pineko
+  git checkout main
 elif [[ ${1,,} == "n"* ]]; then
   cd $root/yadism
-  git checkout  fix_numerical_fonll
+  git checkout numerical_fonll
   cd $root/pineko
-  git checkout  num_fonll
-  # pip install \
-    # git+https://github.com/NNPDF/yadism@numerical_fonll \
-    # git+https://github.com/NNPDF/pineko@num_fonll
+  git checkout num_fonll
+elif [[ ${1,,} == "f"* ]]; then
+  cd $root/yadism
+  git checkout fix_numerical_fonll
+  cd $root/pineko
+  git checkout num_fonll
 else
-  cat << EOL
+  cat <<EOL
 Supported options are
   - [n]umerical
   - [a]nalitycal

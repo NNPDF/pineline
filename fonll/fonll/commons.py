@@ -42,9 +42,9 @@ def patch(theory, observables):
     for fl in hfl:
         theory[f"kDIS{fl}Thr"] = 1.0
 
-    # theory["TMC"] = 0
     # observables["prDIS"] = "NC"
-    # observables["IC"] = 0
+    theory["TMC"] = 0
+    theory["IC"] = 0
 
     # theory["FONLLParts"] = "full"
     # theory["FNS"] = "FONLL-A"

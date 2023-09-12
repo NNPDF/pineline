@@ -43,6 +43,8 @@ aliases are exported, so you could use all of the following:
 ```sh
 # switch to numerical FONLL
 switch n
+# switch to fixed numerical FONLL
+switch f
 # switch to analytical FONLL
 switch a
 
