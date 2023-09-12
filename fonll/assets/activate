@@ -1,6 +1,7 @@
 . #root/env/bin/activate
 
 export FONLL_WORKSPACE=#root
+export YADISM_SILENT_MODE=0
 export pre_fonll_lhapdf_data_path=$LHAPDF_DATA_PATH
 export LHAPDF_DATA_PATH=#root/LHAPDF
 export pre_fonll_path=$PATH

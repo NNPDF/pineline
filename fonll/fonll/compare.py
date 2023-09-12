@@ -126,7 +126,7 @@ def heatmap(ratio, dest: Path):
         shading="auto",
         cmap=plt.colormaps["RdBu_r"],
         norm=colors.CenteredNorm(vcenter=0.0, halfrange=50),
-        fmt=".3g",
+        fmt=".2g",
         cbar_kws={"label": "(nFONLL - aFONLL) / aFONLL %"},
     )
     plt.xlabel(r"$x$")
@@ -154,8 +154,8 @@ def four_plot(d: Data, dest: Path):
     def aspect(ax, title):
         ax.set_ylabel(r"$Q^2$")
         ax.set_xlabel(r"$x$")
-        #  ax.set_xscale("log")
-        #  ax.set_yscale("log")
+        ax.set_xscale("log")
+        ax.set_yscale("log")
         ax.set_title(title)
 
     ax0 = fig.add_subplot(2, 2, 3)
@@ -170,7 +170,9 @@ def four_plot(d: Data, dest: Path):
         cmap=plt.colormaps["RdBu_r"],
         norm=colors.CenteredNorm(
             vcenter=1.0,
-            halfrange=np.mean(rat) - np.quantile(rat, 1e-2),
+            #  halfrange=np.mean(rat) - np.quantile(rat, 1e-2),
+            halfrange=20e-2,
+            #  halfrange=2,
         ),
     )
     aspect(ax0, "numerical fonll / analytical fonll")
