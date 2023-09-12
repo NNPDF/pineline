@@ -12,7 +12,7 @@ if [[ ${1,,} == "a"* ]]; then
     # git+https://github.com/NNPDF/pineko
 elif [[ ${1,,} == "n"* ]]; then
   cd $root/yadism
-  git checkout  numerical_fonll
+  git checkout  fix_numerical_fonll
   cd $root/pineko
   git checkout  num_fonll
   # pip install \
