@@ -14,6 +14,7 @@ def _patch(theory, observables):
 
     # theory[f"kDISbThr"] = 4.0
     theory["kbThr"] = 4.0
+    theory["FNS"] = "FONLL-B"
 
     return theory, observables
 

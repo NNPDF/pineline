@@ -9,9 +9,9 @@ PINECARDS = "pinecards"
 DATASET = "HERA_NC_318GEV_EAVG_SIGMARED_CHARM"
 
 PDF = {
-    3: 'NNPDF40ev_NLO_3F',
-    4: 'NNPDF40ev_NLO_4F',
-    5: 'NNPDF40ev_NLO_5F',
+    3: "NNPDF40ev_NLO_3F",
+    4: "NNPDF40ev_NLO_4F",
+    5: "NNPDF40ev_NLO_5F",
 }
 
 
@@ -31,8 +31,8 @@ def patch(theory, observables):
     del observables["observables"]["XSHERANCAVG_charm"]
     observables["observables"]["F2_charm"] = []
     #  for qq in np.geomspace(mc2, 16 * mb2, 10):
-    #  for qq in np.arange(3.0, 15.0):
-    for qq in np.geomspace(2, 100, 30):
+    for qq in np.arange(3.0, 15.0):
+        # for qq in np.geomspace(2, 100, 30):
         #  qq = 5.0
         #  for xx in np.geomspace(5e-7, 1, 10):
         #  for xx in np.arange(0.02, 0.8, 0.03):
@@ -51,7 +51,7 @@ def patch(theory, observables):
     # theory["FONLLParts"] = "full"
     # theory["FNS"] = "FONLL-A"
     # theory["NfFF"] = 3
-    theory["PTO"] = 1
+    # theory["PTO"] = 1
 
     return theory, observables
 

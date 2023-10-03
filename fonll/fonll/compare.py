@@ -60,6 +60,10 @@ class Data:
 
     @property
     def numres(self) -> npt.NDArray:
+        # FONLL-B
+        if self.num.shape[1] == 4:
+            return self.num[:, 0] - self.num[:, 1] + self.num[:, 2] + self.num[:, 3]
+        # FONLL-A, C
         return sum((-1) ** n * self.num[:, n] for n in range(5 if INCLUDE_NF5 else 3))
 
     @property

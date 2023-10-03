@@ -7,19 +7,29 @@ import yadism
 
 from .commons import dump, load, patch, DATASET, PDF
 
-include_nf5 = False
-FLAVORS = [3, 3, 4, 4, 5]
+include_nf5 = True
+FLAVORS = [3, 3, 4, 4]  # 5]
 RESULTS = "numerical"
 
 
 def _patch(theory, observables):
     theory, observables = patch(theory, observables)
-    theory["FONLLParts"] = "full"
+    # theory["FONLLParts"] = "full"
 
     theories = []
-    for scheme, nf in [("FFNS", 3), ("FFN0", 3), ("FFNS", 4), ("FFN0", 4), ("FFNS", 5)]:
+    for scheme, nf, parts in [
+        ("FFNS", 3, "full"),
+        ("FFN0", 3, "full"),
+        ("FFNS", 4, "massless"),
+        ("FFNS", 4, "massive"),
+        # ("FFN0", 4),
+        # ("FFNS", 5)
+    ]:
         th = copy.deepcopy(theory)
-        th["FNS"], th["NfFF"] = f"FONLL-{scheme}", nf
+        th["PTO"] = 2
+        th["FNS"], th["NfFF"], th["FONLLParts"] = f"FONLL-{scheme}", nf, parts
+        if parts == "massless":
+            th["PTO"] = 1
         theories.append(th)
     return theories, observables
 
