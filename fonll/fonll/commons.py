@@ -9,9 +9,9 @@ PINECARDS = "pinecards"
 DATASET = "HERA_NC_318GEV_EAVG_SIGMARED_CHARM"
 
 PDF = {
-    3: "221012-01-rs-nnpdf40_baseline_repeat_nf3",
-    4: "221012-01-rs-nnpdf40_baseline_repeat_nf4",
-    5: "221012-01-rs-nnpdf40_baseline_repeat_nf5",
+    3: 'NNPDF40ev_NLO_3F',
+    4: 'NNPDF40ev_NLO_4F',
+    5: 'NNPDF40ev_NLO_5F',
 }
 
 
@@ -46,12 +46,12 @@ def patch(theory, observables):
 
     # observables["prDIS"] = "NC"
     theory["TMC"] = 0
-    theory["IC"] = 0
+    theory["IC"] = 1
 
     # theory["FONLLParts"] = "full"
     # theory["FNS"] = "FONLL-A"
     # theory["NfFF"] = 3
-    # theory["PTO"] = 1
+    theory["PTO"] = 1
 
     return theory, observables
 
