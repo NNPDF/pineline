@@ -993,4 +993,4 @@ full = ["pinefarm"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.12"
-content-hash = "74b855e0f7bf4d6bf4dfe7da79c0cc5d3c7a418d0d3fdceea4d2f331a72fd094"
+content-hash = "41d67c2dec202341d891a19f9d68eb1b24789e8c915555b9e611ec63851f0fb7"
