@@ -1,24 +1,29 @@
 import Avatar from '@components/avatar'
 
+function Author({user, children}) {
+  return <>
+      <Avatar name={user} /> <a href={`https://github.com/${user}`}>{children}</a>
+  </>;
+}
+
 # About
 
 The **Pineline** and this websites are developed and maintained by
 [N3PDF](https://n3pdf.mi.infn.it/).
 
-
 In particular, the following people are involved in the overall project:
 
-- <Avatar name="andreab1997"/> [Andrea Barontini](https://github.com/andreab1997)
-- <Avatar name="AleCandido"/> [Alessandro Candido](https://github.com/AleCandido)
-- <Avatar name="scarlehoff"/> [Juan Cruz-Martinez](https://github.com/scarlehoff)
-- <Avatar name="felixhekhorn"/> [Felix Hekhorn](https://github.com/felixhekhorn)
-- <Avatar name="cschwan"/> [Christopher Schwan](https://github.com/cschwan)
+- <Author user="andreab1997">Andrea Barontini</Author>
+- <Author user="AleCandido">Alessandro Candido</Author>
+- <Author user="scarlehoff">Juan Cruz</Author>
+- <Author user="felixhekhorn">Felix Hekhorn</Author>
+- <Author user="cschwan">Christopher Schwan</Author>
 
 While people in the following list widely contributed to specific projects
 belonging in the Pineline scope:
 
-- <Avatar name="giacomomagni"/> [Giacomo Magni](https://github.com/giacomomagni)
-- <Avatar name="niclaurenti"/> [Niccolò Laurenti](https://github.com/niclaurenti)
+- <Author name="giacomomagni">Giacomo Magni</Author>
+- <Author name="niclaurenti">Niccolò Laurenti</Author>
 
 <style global jsx>{`
   li::marker {
